@@ -71,6 +71,8 @@ public class DashboardController implements Initializable {
         DBConnection.openConnection();
         DAO<DataCache> dao = new CustomerDAO(DBConnection.getConnection());
         DataCache.setAllCustomers(dao.getAll());
+        DataCache.addToAllObjectList(DataCache.getAllCustomers());
+
         DBConnection.closeConnection();
     }
 
@@ -79,6 +81,8 @@ public class DashboardController implements Initializable {
         DBConnection.openConnection();
         DAO<DataCache> dao = new AppointmentDAO(DBConnection.getConnection());
         DataCache.setAllAppointments(dao.getAll());
+        DataCache.addToAllObjectList(DataCache.getAllAppointments());
+
         DBConnection.closeConnection();
     }
 
@@ -95,6 +99,8 @@ public class DashboardController implements Initializable {
         DBConnection.openConnection();
         DAO<DataCache> dao = new DivisionDAO(DBConnection.getConnection());
         DataCache.setAllFirstLevelDivision(dao.getAll());
+        DataCache.addToAllObjectList(DataCache.getAllFirstLevelDivision());
+
         DBConnection.closeConnection();
     }
 
@@ -103,6 +109,8 @@ public class DashboardController implements Initializable {
         DBConnection.openConnection();
         DAO<DataCache> dao = new CountryDAO(DBConnection.getConnection());
         DataCache.setAllCountries(dao.getAll());
+        DataCache.addToAllObjectList(DataCache.getAllCountries());
+
         DBConnection.closeConnection();
     }
 
@@ -312,6 +320,13 @@ public class DashboardController implements Initializable {
     @FXML
     private void logout() throws IOException {
         //TODO: clear all the objects and lists in case we log back in...
+
+        /**DataCache.getAllAppointments().clear();
+        DataCache.getAllAppointments().clear();
+        DataCache.getAllContacts().clear();
+        DataCache.getAllCountries().clear();
+        DataCache.getAllFirstLevelDivision().clear();*/
+        DataCache.clearObjects();
         SceneManager.buildLoginScene();
         SceneManager.getStage("dashboard").close();
     }
