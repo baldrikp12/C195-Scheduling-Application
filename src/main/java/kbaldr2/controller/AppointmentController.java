@@ -200,23 +200,45 @@ public class AppointmentController implements Initializable {
     @FXML
     private void addModifyApp(ActionEvent event) {
 
-        if (isAdding && isFilledOut()) {
-            // Get the selected start and end times from the list views
-            LocalDate selectedDate = datePicker.getValue();
-            String startTime = startTimeListView.getSelectionModel().getSelectedItem();
-            String endTime = endTimeListView.getSelectionModel().getSelectedItem();
-
-            // Concatenate the selected date with the selected start and end times
-            LocalTime start = LocalTime.parse(startTime);
-            LocalTime end = LocalTime.parse(endTime);
-            LocalDateTime localStart = LocalDateTime.of(selectedDate, start);
-            LocalDateTime localEnd = LocalDateTime.of(selectedDate, end);
-            // Get the selected customer, contact, and user
+        if (isFilledOut()) {
+            String title = titleField.getText();
+            String type = typeField.getTypeSelector();
+            String location = locationField.getText();
+            String description = descArea.getText();
+            LocalDateTime startDateTime = getStartDateTime();
+            LocalDateTime endDateTime = getEndDateTime();
             String customerName = customerMenu.getText();
             String contactName = contactMenu.getText();
-            String userName = currentUserLabel.getText();
-
+            if (isAdding) {
+                //TODO: User might be selected so created by will be different.
+                String userName = currentUserLabel.getText();
+                String createdBy = currentUserLabel.getText();
+                //String assignUser = userMenu.getText();
+                //initiate query to INSERT
+            } else {
+                //TODO: if modifying then created by stays the same and updatedby will be updated.
+                String userName = currentUserLabel.getText();
+                //initiate query to UPDATE
+            }
+        } else {
+            //TODO add alert about missed areas
         }
+    }
+
+    private LocalDateTime getStartDateTime() {
+        LocalDate selectedDate = datePicker.getValue();
+        String startTime = startTimeListView.getSelectionModel().getSelectedItem();
+        LocalTime start = LocalTime.parse(startTime);
+        LocalDateTime localStart = LocalDateTime.of(selectedDate, start);
+        return localStart;
+    }
+
+    private LocalDateTime getEndDateTime() {
+        LocalDate selectedDate = datePicker.getValue();
+        String endTime = endTimeListView.getSelectionModel().getSelectedItem();
+        LocalTime end = LocalTime.parse(endTime);
+        LocalDateTime localEnd = LocalDateTime.of(selectedDate, end);
+        return localEnd;
     }
 
     private boolean isFilledOut() {
