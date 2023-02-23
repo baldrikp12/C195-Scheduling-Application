@@ -9,18 +9,18 @@ import kbaldr2.controller.*;
 import java.io.IOException;
 
 public class SceneManager {
-    
+
     private static Stage loginStage;
     private static Stage dashboardStage;
     private static Stage customerStage;
     private static Stage appointmentStage;
     private static Stage reportStage;
-    
-    
+
+
     private SceneManager() {
-    
+
     }
-    
+
     /**
      * Opens a new scene in a new window
      *
@@ -37,7 +37,7 @@ public class SceneManager {
         loginStage.setResizable(false);
         loginStage.show();
     }
-    
+
     public static void buildDashboardScene() throws IOException {
         //builds dashbord scene
         FXMLLoader dashboardLoader = new FXMLLoader(SceneManager.class.getResource("/kbaldr2/view/dashboard.fxml"));
@@ -48,9 +48,9 @@ public class SceneManager {
         dashboardStage.setUserData(dashboardController);
         dashboardStage.setResizable(false);
         dashboardStage.show();
-        
+
     }
-    
+
     public static void buildCustomerScene() throws IOException {
         //builds customer scene
         FXMLLoader customerLoader = new FXMLLoader(SceneManager.class.getResource("/kbaldr2/view/customer.fxml"));
@@ -61,9 +61,9 @@ public class SceneManager {
         customerStage.setUserData(customerController);
         customerStage.setResizable(false);
         customerStage.show();
-        
+
     }
-    
+
     public static void buildAppointmentScene() throws IOException {
         //builds appointment scene
         FXMLLoader appointmentLoader = new FXMLLoader(SceneManager.class.getResource("/kbaldr2/view/appointment.fxml"));
@@ -75,7 +75,7 @@ public class SceneManager {
         appointmentStage.setResizable(false);
         appointmentStage.show();
     }
-    
+
     public static void buildReportScene() throws IOException {
         //builds report scene
         FXMLLoader reportLoader = new FXMLLoader(SceneManager.class.getResource("/kbaldr2/view/report.fxml"));
@@ -86,11 +86,11 @@ public class SceneManager {
         reportStage.setUserData(reportController);
         reportStage.setResizable(false);
         reportStage.show();
-        
+
     }
-    
+
     public static Stage getStage(String theStageName) {
-        
+
         Stage theStage = null;
         switch (theStageName) {
             case "login":
@@ -110,42 +110,42 @@ public class SceneManager {
                 break;
         }
         return theStage;
-        
+
     }
-    
+
     public static LoginController getLoginController() {
-        
+
         LoginController loginController = (LoginController) loginStage.getUserData();
-        
+
         return loginController;
     }
-    
+
     public static DashboardController getDashboardController() {
-        
+
         DashboardController dashboardController = (DashboardController) dashboardStage.getUserData();
-        
+
         return dashboardController;
     }
-    
+
     public static CustomerController getCustomerController() {
-        
+
         CustomerController customerController = (CustomerController) customerStage.getUserData();
-        
+
         return customerController;
     }
-    
+
     public static AppointmentController getAppointmentController() {
-        
+
         AppointmentController appointmentController = (AppointmentController) appointmentStage.getUserData();
-        
+
         return appointmentController;
     }
-    
+
     public static ReportController getReportController() {
-        
+
         ReportController reportController = (ReportController) reportStage.getUserData();
-        
+
         return reportController;
     }
-    
+
 }

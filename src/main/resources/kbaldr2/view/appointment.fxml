@@ -1,50 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="458.0"
-            prefWidth="408.0" xmlns="http://javafx.com/javafx/19"
-            fx:controller="kbaldr2.controller.AppointmentController">
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="parentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="458.0" prefWidth="408.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kbaldr2.controller.AppointmentController">
     <children>
-        <TextField disable="true" layoutX="15.0" layoutY="99.0" prefHeight="25.0" prefWidth="47.0" promptText="ID"/>
-        <TextField layoutX="14.0" layoutY="131.0" prefHeight="25.0" prefWidth="141.0" promptText="Title"/>
-        <TextArea layoutX="9.0" layoutY="203.0" prefHeight="123.0" prefWidth="200.0" promptText="Description"
-                  wrapText="true"/>
-        <TextField layoutX="14.0" layoutY="158.0" prefHeight="25.0" prefWidth="303.0" promptText="Location"/>
-        <TextField layoutX="167.0" layoutY="131.0" promptText="Type"/>
-        <DatePicker fx:id="datePicker" layoutX="218.0" layoutY="203.0" onAction="#updateStartTime" prefHeight="25.0"
-                    prefWidth="141.0" promptText="Date"/>
-        <HBox layoutX="148.0" layoutY="417.0" spacing="25.0">
+        <TextField fx:id="appIDField" disable="true" layoutX="15.0" layoutY="99.0" prefHeight="25.0" prefWidth="47.0" promptText="ID" />
+        <TextField fx:id="titleField" layoutX="14.0" layoutY="131.0" prefHeight="25.0" prefWidth="141.0" promptText="Title" />
+        <TextArea fx:id="descArea" layoutX="9.0" layoutY="203.0" prefHeight="123.0" prefWidth="200.0" promptText="Description" wrapText="true" />
+        <TextField fx:id="locationField" layoutX="14.0" layoutY="158.0" prefHeight="25.0" prefWidth="303.0" promptText="Location" />
+        <TextField fx:id="typeField" layoutX="167.0" layoutY="131.0" promptText="Type" />
+        <DatePicker fx:id="datePicker" layoutX="218.0" layoutY="203.0" onAction="#updateStartTime" prefHeight="25.0" prefWidth="141.0" promptText="Date" />
+        <HBox layoutX="147.0" layoutY="418.0" spacing="25.0">
             <children>
-                <Button fx:id="addModifyButton" mnemonicParsing="false" onAction="#addModifyApp" text="Add"/>
-                <Button mnemonicParsing="false" onAction="#close" text="Cancel"/>
+                <Button fx:id="addModifyButton" mnemonicParsing="false" onAction="#addModifyApp" text="Add" />
+                <Button mnemonicParsing="false" onAction="#close" text="Cancel" />
             </children>
         </HBox>
         <Label layoutX="38.0" layoutY="26.0" text="Create/Modify Appointments">
             <font>
-                <Font name="System Bold" size="24.0"/>
+                <Font name="System Bold" size="24.0" />
             </font>
         </Label>
-        <Label layoutX="218.0" layoutY="239.0" text="Start Time"/>
-        <ListView fx:id="timeListView" editable="true" layoutX="218.0" layoutY="255.0" onMouseReleased="#updateEndTime"
-                  prefHeight="69.0" prefWidth="82.0"/>
-        <Label layoutX="306.0" layoutY="239.0" text="End time"/>
-        <ListView fx:id="endTimeListView" editable="true" layoutX="306.0" layoutY="255.0" prefHeight="69.0"
-                  prefWidth="82.0"/>
-        <VBox layoutX="11.0" layoutY="333.0" prefHeight="84.0" prefWidth="397.0">
-            <children>
-                <Label text="Contact"/>
-                <MenuButton fx:id="contactMenu" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT"
-                            text="          "/>
-                <Label text="User"/>
-                <MenuButton fx:id="userMenu" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT"
-                            text="          "/>
-            </children>
-        </VBox>
-        <MenuButton fx:id="customerMenu" layoutX="85.0" layoutY="99.0" mnemonicParsing="false" text="          "/>
-        <Label layoutX="83.0" layoutY="82.0" text="Customer"/>
+        <Label layoutX="218.0" layoutY="239.0" text="Start Time" />
+        <ListView fx:id="startTimeListView" editable="true" layoutX="218.0" layoutY="255.0" onMouseReleased="#updateEndTime" prefHeight="69.0" prefWidth="82.0" />
+        <Label layoutX="306.0" layoutY="239.0" text="End time" />
+        <ListView fx:id="endTimeListView" editable="true" layoutX="306.0" layoutY="255.0" prefHeight="69.0" prefWidth="82.0" />
+        <MenuButton fx:id="customerMenu" layoutX="85.0" layoutY="99.0" mnemonicParsing="false" text="          " />
+        <Label layoutX="83.0" layoutY="82.0" text="Customer" />
+          <Label layoutX="17.0" layoutY="336.0" text="Contact" />
+          <MenuButton fx:id="contactMenu" layoutX="17.0" layoutY="354.0" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" text="          " />
+      <VBox layoutX="302.0" layoutY="397.0">
+         <children>
+                <Label text="Current User:" />
+            <Separator prefHeight="11.0" prefWidth="90.0" />
+            <Label fx:id="currentUserLabel" text="TEST USERNAME" />
+         </children>
+      </VBox>
     </children>
 </AnchorPane>
