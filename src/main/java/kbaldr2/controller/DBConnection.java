@@ -23,7 +23,6 @@ public class DBConnection {
             Class.forName(driver); // Locate Driver
             //connection = DriverManager.getConnection(jdbcUrl, userName, password); // Reference Connection object
             connection = DriverManager.getConnection(localdDB, "root", "Bypass12"); // Reference Connection object
-            System.out.println("DB controller: Connection successful!");
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
         }
@@ -33,7 +32,6 @@ public class DBConnection {
         
         try {
             connection.close();
-            System.out.println("DB controller: Connection closed!");
         } catch (Exception e) {
             System.out.println("DB controller: Error:" + e.getMessage());
         }

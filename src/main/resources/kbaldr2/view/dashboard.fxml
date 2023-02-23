@@ -57,27 +57,23 @@
                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="45.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
             </graphic>
         </Label>
-      <VBox fx:id="alertBox" layoutX="172.0" layoutY="179.0" prefHeight="69.0" prefWidth="456.0" spacing="15.0">
-         <children>
-              <Label fx:id="appAlertLabel" alignment="CENTER" prefHeight="27.0" prefWidth="664.0" style="-fx-background-color: CCCCCC; -fx-text-fill: RED;" text="There is an appointment within 15 minutes.">
-                  <effect>
-                      <DropShadow />
-                  </effect>
-                  <font>
-                      <Font name="System Bold" size="18.0" />
-                  </font>
-              </Label>
-              <Label fx:id="appAlertInfoLabel" alignment="CENTER" prefHeight="26.0" prefWidth="664.0" style="-fx-background-color: CCCCCC;" text="[  Appointment 11 - 08/08/2023 - 13:30  ]">
-                  <effect>
-                      <DropShadow />
-                  </effect>
-                  <font>
-                      <Font name="System Bold" size="12.0" />
-                  </font>
-              </Label>
-         </children>
-      </VBox>
         <Separator layoutX="319.0" layoutY="489.0" prefWidth="200.0" />
+        <Label fx:id="appAlertLabel" alignment="CENTER" layoutX="68.0" layoutY="180.0" prefHeight="27.0" prefWidth="664.0" style="-fx-background-color: CCCCCC; -fx-text-fill: RED;" text="There is an appointment within 15 minutes.">
+            <effect>
+                <DropShadow />
+            </effect>
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <Label fx:id="appAlertInfoLabel" alignment="CENTER" layoutX="68.0" layoutY="221.0" prefHeight="26.0" prefWidth="664.0" style="-fx-background-color: CCCCCC;" text="[  Appointment 11 - 08/08/2023 - 13:30  ]">
+            <effect>
+                <DropShadow />
+            </effect>
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
         <Button fx:id="closeAppAlertButton" alignment="CENTER" layoutX="606.0" layoutY="184.0" mnemonicParsing="false" onAction="#closeAppAlert" text="X">
             <font>
                 <Font size="7.0" />

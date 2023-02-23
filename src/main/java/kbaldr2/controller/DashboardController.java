@@ -34,8 +34,6 @@ public class DashboardController implements Initializable {
     private String user = "";
     private boolean viewingAppointments = true;
     @FXML
-    private VBox alertBox;
-    @FXML
     private Label appAlertLabel;
     @FXML
     private Label appAlertInfoLabel;
@@ -112,40 +110,52 @@ public class DashboardController implements Initializable {
 
         LocalDateTime now = LocalDateTime.now();
         boolean appointmentInFifteen = false;
-        long difference = 0;
-        Appointment appointment = null;
-        for (DataCache item : DataCache.getAllAppointments()) {
+        Appointment nearestAppointment = null;
+        long nearestDifference = Long.MAX_VALUE;
 
-            appointment = (Appointment) item;
+        for (DataCache item : DataCache.getAllAppointments()) {
+            Appointment appointment = (Appointment) item;
             LocalDateTime appointmentDateTime = appointment.getStartDateAndTime();
 
-            if (Math.abs(ChronoUnit.MINUTES.between(now, appointmentDateTime)) <= 15) {
-                appAlertLabel.setText("There is an appointment within 15 minutes.");
-                appAlertLabel.setStyle("-fx-text-fill: RED; -fx-background-color: CCCCCC");
-                appAlertInfoLabel.setText("[  Appointment " + appointment.getId() + " | " + appointment.getStartDateAndTime().toLocalDate() + " | " + appointment.getStartDateAndTime().toLocalTime() + "  ]");
-                appAlertInfoLabel.setStyle("-fx-text-fill: RED; -fx-background-color: CCCCCC");
-                appAlertLabel.setVisible(true);
-                appAlertInfoLabel.setVisible(true);
+            // Calculate the difference between the appointment time and the current time in minutes
+            long difference = ChronoUnit.MINUTES.between(now, appointmentDateTime);
+
+            // Check if the difference is less than or equal to 15 and is positive
+            if (difference <= 15 && difference >= 0) {
+                // Check if this appointment is the nearest one to the current time
+                if (difference < nearestDifference) {
+                    nearestDifference = difference;
+                    nearestAppointment = appointment;
+                }
                 appointmentInFifteen = true;
-                break;
             }
         }
 
-        if (!appointmentInFifteen) {
+        if (appointmentInFifteen) {
+            // Display the nearest appointment that is within 15 minutes
+            appAlertLabel.setText("There is an appointment within 15 minutes.");
+            appAlertLabel.setStyle("-fx-text-fill: RED; -fx-background-color: CCCCCC");
+            appAlertInfoLabel.setText("[  Appointment " + nearestAppointment.getId() + " | " + nearestAppointment.getStartDateAndTime().toLocalDate() + " | " + nearestAppointment.getStartDateAndTime().toLocalTime() + "  ]");
+            appAlertInfoLabel.setStyle("-fx-text-fill: RED; -fx-background-color: CCCCCC");
+            appAlertLabel.setVisible(true);
+            appAlertInfoLabel.setVisible(true);
+        } else {
+            // Display that there are no appointments within 15 minutes
             appAlertLabel.setText("There are no appointments within 15 minutes.");
             appAlertLabel.setStyle("-fx-text-fill: BLUE; -fx-background-color: CCCCCC");
             appAlertInfoLabel.setVisible(false);
         }
-        alertBox.setVisible(true);
+
         closeAppAlertButton.setVisible(true);
     }
+
 
     @FXML
     private void viewAppsThisMonth() {
 
         if (!viewingAppointments) {
             dataCacheTable.getColumns().clear();
-            TableFormatter.buildAppTables(); //add condition if coming from customer then build.
+            TableFormatter.buildAppTables();
             viewingAppointments = true;
         }
         ObservableList<DataCache> filteredData = FXCollections.observableArrayList();
@@ -169,7 +179,7 @@ public class DashboardController implements Initializable {
 
         if (!viewingAppointments) {
             dataCacheTable.getColumns().clear();
-            TableFormatter.buildAppTables(); //add condition if coming from customer then build.
+            TableFormatter.buildAppTables();
             viewingAppointments = true;
         }
 
@@ -195,7 +205,7 @@ public class DashboardController implements Initializable {
 
         if (!viewingAppointments) {
             dataCacheTable.getColumns().clear();
-            TableFormatter.buildAppTables(); //add condition if coming from customer then build.
+            TableFormatter.buildAppTables();
             viewingAppointments = true;
         }
         dataCacheTable.setItems(DataCache.getAllAppointments());
@@ -207,7 +217,7 @@ public class DashboardController implements Initializable {
 
         if (viewingAppointments) {
             dataCacheTable.getColumns().clear();
-            TableFormatter.buildCustTables(); //add condition if coming from apps then build.
+            TableFormatter.buildCustTables();
             viewingAppointments = false;
         }
         dataCacheTable.setItems(DataCache.getAllCustomers());
@@ -217,9 +227,8 @@ public class DashboardController implements Initializable {
     @FXML
     void closeAppAlert(ActionEvent event) throws IOException {
 
-        alertBox.setVisible(false);
-        //appAlertLabel.setVisible(false);
-        //appAlertInfoLabel.setVisible(false);
+        appAlertLabel.setVisible(false);
+        appAlertInfoLabel.setVisible(false);
         closeAppAlertButton.setVisible(false);
 
     }
