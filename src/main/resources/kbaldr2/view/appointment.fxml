@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="parentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="458.0" prefWidth="408.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kbaldr2.controller.AppointmentController">
+<AnchorPane fx:id="parentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="438.0" prefWidth="409.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kbaldr2.controller.AppointmentController">
     <children>
-        <TextField fx:id="appIDField" disable="true" layoutX="15.0" layoutY="99.0" prefHeight="25.0" prefWidth="47.0" promptText="ID" />
         <TextField fx:id="titleField" layoutX="14.0" layoutY="131.0" prefHeight="25.0" prefWidth="141.0" promptText="Title" />
         <TextArea fx:id="descArea" layoutX="9.0" layoutY="203.0" prefHeight="123.0" prefWidth="200.0" promptText="Description" wrapText="true" />
         <TextField fx:id="locationField" layoutX="14.0" layoutY="158.0" prefHeight="25.0" prefWidth="303.0" promptText="Location" />
         <TextField fx:id="typeField" layoutX="167.0" layoutY="131.0" promptText="Type" />
         <DatePicker fx:id="datePicker" layoutX="218.0" layoutY="203.0" onAction="#updateStartTime" prefHeight="25.0" prefWidth="141.0" promptText="Date" />
-        <HBox layoutX="147.0" layoutY="418.0" spacing="25.0">
+        <HBox layoutX="152.0" layoutY="404.0" spacing="25.0">
             <children>
                 <Button fx:id="addModifyButton" mnemonicParsing="false" onAction="#addModifyApp" text="Add" />
                 <Button mnemonicParsing="false" onAction="#close" text="Cancel" />
             </children>
         </HBox>
-        <Label layoutX="38.0" layoutY="26.0" text="Create/Modify Appointments">
+        <Label fx:id="addModLabel" alignment="CENTER" layoutY="26.0" prefHeight="35.0" prefWidth="409.0" text="Create/Modify Appointments">
             <font>
                 <Font name="System Bold" size="24.0" />
             </font>
@@ -27,15 +35,17 @@
         <ListView fx:id="startTimeListView" editable="true" layoutX="218.0" layoutY="255.0" onMouseReleased="#updateEndTime" prefHeight="69.0" prefWidth="82.0" />
         <Label layoutX="306.0" layoutY="239.0" text="End time" />
         <ListView fx:id="endTimeListView" editable="true" layoutX="306.0" layoutY="255.0" prefHeight="69.0" prefWidth="82.0" />
-        <MenuButton fx:id="customerMenu" layoutX="85.0" layoutY="99.0" mnemonicParsing="false" text="          " />
-        <Label layoutX="83.0" layoutY="82.0" text="Customer" />
-          <Label layoutX="17.0" layoutY="336.0" text="Contact" />
-          <MenuButton fx:id="contactMenu" layoutX="17.0" layoutY="354.0" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" text="          " />
-      <VBox layoutX="302.0" layoutY="397.0">
+        <Label layoutX="72.0" layoutY="82.0" text="Customer" />
+      <Label layoutX="230.0" layoutY="82.0" text="Contact" />
+      <ComboBox fx:id="customerCombo" layoutX="72.0" layoutY="99.0" prefWidth="150.0" />
+      <ComboBox fx:id="contactCombo" layoutX="231.0" layoutY="99.0" prefWidth="150.0" />
+      <Label layoutX="9.0" layoutY="333.0" text="User" />
+      <ComboBox fx:id="userCombo" layoutX="10.0" layoutY="350.0" prefWidth="150.0" />
+      <VBox layoutX="12.0" layoutY="82.0">
          <children>
-                <Label text="Current User:" />
-            <Separator prefHeight="11.0" prefWidth="90.0" />
-            <Label fx:id="currentUserLabel" text="TEST USERNAME" />
+            <Label alignment="CENTER" text="APP ID: " />
+            <Separator prefWidth="30.0" />
+            <Label fx:id="appIDField" alignment="CENTER" prefHeight="17.0" prefWidth="42.0" text="AUTO" />
          </children>
       </VBox>
     </children>

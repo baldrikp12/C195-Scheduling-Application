@@ -32,6 +32,7 @@ public class AppointmentDAO extends DAO<DataCache> {
         String type;
         LocalDateTime startDateAndTime;
         LocalDateTime endDateAndTime;
+        String createdBy;
         int customerID;
         int userID;
         int contactID;
@@ -45,11 +46,12 @@ public class AppointmentDAO extends DAO<DataCache> {
             type = rs.getString("Type");
             startDateAndTime = rs.getObject("Start", LocalDateTime.class);
             endDateAndTime = rs.getObject("End", LocalDateTime.class);
+            createdBy = rs.getString("Created_By");
             customerID = rs.getInt("Customer_ID");
             userID = rs.getInt("User_ID");
             contactID = rs.getInt("Contact_ID");
             //converts times to system time for display purposes.
-            appointmentData.add(new Appointment(appointmentID, title, description, location, type, Formatter.UTCtoLocal(startDateAndTime), Formatter.UTCtoLocal(endDateAndTime), customerID, userID, contactID));
+            appointmentData.add(new Appointment(appointmentID, title, description, location, type, Formatter.UTCtoLocal(startDateAndTime), Formatter.UTCtoLocal(endDateAndTime), createdBy, customerID, userID, contactID));
         }
         return appointmentData;
     }
@@ -60,16 +62,17 @@ public class AppointmentDAO extends DAO<DataCache> {
     @Override public void create(DataCache item) {
         
         Appointment appointment = (Appointment) item;
-        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Last_Update, Customer_ID, User_ID, Contact_ID) " + "VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, ?, ?)")) {
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Customer_ID, User_ID, Contact_ID) " + "VALUES (?, ?, ?, ?, ?, ?, NOW(),?, NOW(), ?, ?, ?)")) {
             statement.setString(1, appointment.getTitle());
             statement.setString(2, appointment.getDescription());
             statement.setString(3, appointment.getLocation());
             statement.setString(4, appointment.getType());
-            statement.setTimestamp(5, Timestamp.valueOf(appointment.getStartDateAndTimeFormatted()));
-            statement.setTimestamp(6, Timestamp.valueOf(appointment.getEndDateAndTimeFormatted()));
-            statement.setInt(7, appointment.getCustomerID());
-            statement.setInt(8, appointment.getUserID());
-            statement.setInt(9, appointment.getContactID());
+            statement.setTimestamp(5, Timestamp.valueOf(appointment.getStartDateAndTime()));
+            statement.setTimestamp(6, Timestamp.valueOf(appointment.getEndDateAndTime()));
+            statement.setString(7, appointment.getCreatedBy());
+            statement.setInt(8, appointment.getCustomerID());
+            statement.setInt(9, appointment.getUserID());
+            statement.setInt(10, appointment.getContactID());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -98,7 +101,7 @@ public class AppointmentDAO extends DAO<DataCache> {
      * @param item
      */
     
-    public void create(Appointment item) {
+/*    public void create(Appointment item) {
         
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Last_Update, Customer_ID, User_ID, Contact_ID) " + "VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, ?, ?)")) {
             statement.setString(1, item.getTitle());
@@ -114,6 +117,6 @@ public class AppointmentDAO extends DAO<DataCache> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
     
 }

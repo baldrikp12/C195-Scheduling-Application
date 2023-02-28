@@ -56,8 +56,10 @@ public class DashboardController implements Initializable {
             getAllCustomers();
             getAllAppointments();
             getAllContacts();
+            getAllUsers();
             getAllFirstDivisions();
             getAllCountries();
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -65,7 +67,17 @@ public class DashboardController implements Initializable {
         dataCacheTable.setItems(DataCache.getAllAppointments());
         fifteenMinuteCheck();
     }
-
+    
+    private void getAllUsers() throws SQLException {
+        DBConnection.openConnection();
+        DAO<DataCache> dao = new UserDAO(DBConnection.getConnection());
+        DataCache.setAllUsers(dao.getAll());
+        DataCache.addToAllObjectList(DataCache.getAllUsers());
+    
+        DBConnection.closeConnection();
+        
+    }
+    
     private void getAllCustomers() throws SQLException {
 
         DBConnection.openConnection();

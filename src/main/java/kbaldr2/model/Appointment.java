@@ -12,12 +12,13 @@ public class Appointment extends DataCache {
     private String type;
     private LocalDateTime startDateAndTime;
     private LocalDateTime endDateAndTime;
+    private String createdBy;
     private int customerID;
     private int userID;
     private int contactID;
     private String startDateAndTimeFormatted;
     
-    public Appointment(int appointmentID, String title, String description, String location, String type, LocalDateTime startDateAndTime, LocalDateTime endDateAndTime, int customerID, int userID, int contactID) {
+    public Appointment(int appointmentID, String title, String description, String location, String type, LocalDateTime startDateAndTime, LocalDateTime endDateAndTime, String createdBy, int customerID, int userID, int contactID) {
         
         this.appointmentID = appointmentID;
         this.title = title;
@@ -112,7 +113,15 @@ public class Appointment extends DataCache {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
         return endDateAndTime.format(formatter);
     }
+    public String getCreatedBy() {
+        
+        return createdBy;
+    }
     
+    public void setCreatedBy(String createdBy) {
+        
+        this.createdBy = createdBy;
+    }
     public int getCustomerID() {
         
         return customerID;
