@@ -123,6 +123,16 @@ public abstract class DataCache {
             }        }
         return id;
     }
+
+    public static String getContactName(int contactID) {
+        String name = "";
+        for(DataCache item : getAllContacts()){
+            Contact theContact = (Contact) item;
+            if (theContact.getId() == contactID) {
+                return theContact.getContactName();
+            }        }
+        return name;
+    }
     
     public abstract int getId();
     

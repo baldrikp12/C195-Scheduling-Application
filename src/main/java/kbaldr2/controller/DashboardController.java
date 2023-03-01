@@ -67,17 +67,17 @@ public class DashboardController implements Initializable {
         dataCacheTable.setItems(DataCache.getAllAppointments());
         fifteenMinuteCheck();
     }
-    
+
     private void getAllUsers() throws SQLException {
         DBConnection.openConnection();
         DAO<DataCache> dao = new UserDAO(DBConnection.getConnection());
         DataCache.setAllUsers(dao.getAll());
         DataCache.addToAllObjectList(DataCache.getAllUsers());
-    
+
         DBConnection.closeConnection();
-        
+
     }
-    
+
     private void getAllCustomers() throws SQLException {
 
         DBConnection.openConnection();
@@ -265,7 +265,6 @@ public class DashboardController implements Initializable {
                 disableDashboard(false);
             }
         });
-        SceneManager.getAppointmentController().setScene(1);
     }
 
     public void disableDashboard(boolean theOption) {
@@ -275,9 +274,16 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void modifyRecord() throws IOException {
+        //TODO no more setScene. sending an item to mod will trigger modify mode
+        DataCache item = dataCacheTable.getSelectionModel().getSelectedItem();
+        if (item instanceof Appointment) {
+            SceneManager.buildAppointmentScene();
+            SceneManager.getAppointmentController().setAppointmentToModify(item);
+        } else {
+            SceneManager.buildCustomerScene();
+            //SceneManager.getCustomerController().setCustomerToModify(item);
+        }
 
-        SceneManager.buildAppointmentScene();
-        SceneManager.getAppointmentController().setScene(2);
     }
 
     @FXML
@@ -334,10 +340,10 @@ public class DashboardController implements Initializable {
         //TODO: clear all the objects and lists in case we log back in...
 
         /**DataCache.getAllAppointments().clear();
-        DataCache.getAllAppointments().clear();
-        DataCache.getAllContacts().clear();
-        DataCache.getAllCountries().clear();
-        DataCache.getAllFirstLevelDivision().clear();*/
+         DataCache.getAllAppointments().clear();
+         DataCache.getAllContacts().clear();
+         DataCache.getAllCountries().clear();
+         DataCache.getAllFirstLevelDivision().clear();*/
         DataCache.clearObjects();
         SceneManager.buildLoginScene();
         SceneManager.getStage("dashboard").close();

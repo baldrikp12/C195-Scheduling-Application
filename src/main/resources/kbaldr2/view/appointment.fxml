@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="parentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="438.0" prefWidth="409.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kbaldr2.controller.AppointmentController">
+<AnchorPane fx:id="parentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="438.0" prefWidth="409.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kbaldr2.controller.AppointmentController">
     <children>
         <TextField fx:id="titleField" layoutX="14.0" layoutY="131.0" prefHeight="25.0" prefWidth="141.0" promptText="Title" />
         <TextArea fx:id="descArea" layoutX="9.0" layoutY="203.0" prefHeight="123.0" prefWidth="200.0" promptText="Description" wrapText="true" />
@@ -22,11 +13,11 @@
         <DatePicker fx:id="datePicker" layoutX="218.0" layoutY="203.0" onAction="#updateStartTime" prefHeight="25.0" prefWidth="141.0" promptText="Date" />
         <HBox layoutX="152.0" layoutY="404.0" spacing="25.0">
             <children>
-                <Button fx:id="addModifyButton" mnemonicParsing="false" onAction="#addModifyApp" text="Add" />
+                <Button fx:id="addModifyButton" mnemonicParsing="false" onAction="#addModifyApp" text="Create" />
                 <Button mnemonicParsing="false" onAction="#close" text="Cancel" />
             </children>
         </HBox>
-        <Label fx:id="addModLabel" alignment="CENTER" layoutY="26.0" prefHeight="35.0" prefWidth="409.0" text="Create/Modify Appointments">
+        <Label fx:id="addModLabel" alignment="CENTER" layoutY="26.0" prefHeight="35.0" prefWidth="409.0" text="Create Appointment">
             <font>
                 <Font name="System Bold" size="24.0" />
             </font>
