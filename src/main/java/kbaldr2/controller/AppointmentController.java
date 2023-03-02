@@ -216,7 +216,6 @@ public class AppointmentController implements Initializable {
     @FXML
     private void addModifyApp(ActionEvent event) {
 
-
         if (isFilledOut() && !hasAppOverlap()) {
             String title = titleField.getText();
             String description = descArea.getText();
@@ -232,7 +231,6 @@ public class AppointmentController implements Initializable {
             if (isAdding) {
                 String createdBy = DAO.getUsername();
                 Appointment newApp = new Appointment(0, title, description, location, type, Formatter.localToUTC(startDateTime), Formatter.localToUTC(endDateTime), createdBy, customerID, userID, contactID);
-                //Appointment newApp = new Appointment(0, "testy", "testy", "testy", "testy", Formatter.localToUTC(startDateTime), Formatter.localToUTC(endDateTime), "testy", 1, 2, 1);
 
                 DBConnection.openConnection();
                 DAO<DataCache> dao = new AppointmentDAO(DBConnection.getConnection());
@@ -251,7 +249,7 @@ public class AppointmentController implements Initializable {
 
     private boolean hasAppOverlap() {
         boolean hasOverlap = false;
-        //TODO figure out how to find appointment overlap
+        //TODO figure out how to best find appointment overlap
         return hasOverlap;
     }
 
@@ -279,7 +277,7 @@ public class AppointmentController implements Initializable {
         boolean isAllFilled = true;
         for (Node node : parentPane.getChildren()) {
             if (node instanceof TextField tf) {
-                if (tf.getText().trim().isEmpty() && !tf.getId().equals("appIDField")) {
+                if (tf.getText().trim().isEmpty()) {
                     tf.setStyle("-fx-border-color: RED;");
                     isAllFilled = false;
                 } else {
