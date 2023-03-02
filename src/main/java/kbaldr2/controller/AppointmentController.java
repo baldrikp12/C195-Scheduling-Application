@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import kbaldr2.helper.Alerts;
 import kbaldr2.helper.Formatter;
 import kbaldr2.helper.SceneManager;
 import kbaldr2.model.*;
@@ -35,7 +36,7 @@ public class AppointmentController implements Initializable {
     @FXML
     private ComboBox<String> contactCombo;
     @FXML
-    private ComboBox<String> userCombo;
+    private Label userLabel;
     @FXML
     private Label addModLabel;
     @FXML
@@ -118,12 +119,7 @@ public class AppointmentController implements Initializable {
             contactCombo.getItems().add(contactOption);
         }
 
-        //=====populate users
-        for (DataCache item : DataCache.getAllUsers()) {
-            User user = (User) item;
-            String userOption = user.getUserName();
-            userCombo.getItems().add(userOption);
-        }
+        userLabel.setText(DAO.getUsername());
     }
 
     @FXML
@@ -171,7 +167,6 @@ public class AppointmentController implements Initializable {
 
     }
 
-
     private void populateForm() {
         customerCombo.setValue(DataCache.getCustomerName(appointToMod.getCustomerID()));
         contactCombo.setValue(DataCache.getContactName(appointToMod.getContactID()));
@@ -182,7 +177,8 @@ public class AppointmentController implements Initializable {
         datePicker.setValue(appointToMod.getStartDateAndTime().toLocalDate());
         startTimeListView.getSelectionModel().select(appointToMod.getStartDateAndTime().toLocalTime().toString());
         System.out.println(appointToMod.getStartDateAndTime().toLocalTime().toString());
-        //TODO populate rest of forms and dates and times
+        endTimeListView.getSelectionModel().select(appointToMod.getEndDateAndTime().toLocalTime().toString());
+        //TODO get times to be visible
     }
 
     @FXML
@@ -216,7 +212,7 @@ public class AppointmentController implements Initializable {
     @FXML
     private void addModifyApp(ActionEvent event) {
 
-        if (isFilledOut() && !hasAppOverlap()) {
+        if (isFilledOut()) {
             String title = titleField.getText();
             String description = descArea.getText();
             String location = locationField.getText();
@@ -225,12 +221,14 @@ public class AppointmentController implements Initializable {
             LocalDateTime endDateTime = getEndDateTime();
             int customerID = DataCache.getCustomerID(customerCombo.getValue());
             int contactID = DataCache.getContactID(contactCombo.getValue());
-            int userID = DataCache.getUserID(userCombo.getValue());
-            System.out.println(customerCombo.getValue() + "   " + customerID + "\n" + contactCombo.getValue() + "    " + contactID + "\n" + userCombo.getValue() + "    " + userID + "\n");
+            int userID = DataCache.getUserID(userLabel.getText());
+            System.out.println(customerCombo.getValue() + "   " + customerID + "\n" + contactCombo.getValue() + "    " + contactID + "\n" + userLabel.getText() + "    " + userID + "\n");
 
             if (isAdding) {
                 String createdBy = DAO.getUsername();
-                Appointment newApp = new Appointment(0, title, description, location, type, Formatter.localToUTC(startDateTime), Formatter.localToUTC(endDateTime), createdBy, customerID, userID, contactID);
+
+                Appointment newApp = new Appointment(0, title, description, location, type, Formatter.localToUTC(startDateTime), Formatter.localToUTC(endDateTime), customerID, userID, contactID);
+                newApp.setCreatedBy(createdBy);
 
                 DBConnection.openConnection();
                 DAO<DataCache> dao = new AppointmentDAO(DBConnection.getConnection());
@@ -240,10 +238,17 @@ public class AppointmentController implements Initializable {
 
             } else {
                 String updatedBy = DAO.getUsername();
-                //TODO initiate query to UPDATE
+
+                Appointment newApp = new Appointment(0, title, description, location, type, Formatter.localToUTC(startDateTime), Formatter.localToUTC(endDateTime), customerID, userID, contactID);
+                newApp.setUpdatedBy(updatedBy);
+                DBConnection.openConnection();
+                DAO<DataCache> dao = new AppointmentDAO(DBConnection.getConnection());
+                dao.update(newApp);
+                DataCache.addAppointment(newApp);
+                DBConnection.closeConnection();
             }
         } else {
-            //TODO add alert about missed areas
+            Alerts.showAlert("Please fill form out completely", "Empty Fields");
         }
     }
 

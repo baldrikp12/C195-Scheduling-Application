@@ -13,12 +13,13 @@ public class Appointment extends DataCache {
     private LocalDateTime startDateAndTime;
     private LocalDateTime endDateAndTime;
     private String createdBy;
+    private String updatedBy;
     private int customerID;
     private int userID;
     private int contactID;
     private String startDateAndTimeFormatted;
 
-    public Appointment(int appointmentID, String title, String description, String location, String type, LocalDateTime startDateAndTime, LocalDateTime endDateAndTime, String createdBy, int customerID, int userID, int contactID) {
+    public Appointment(int appointmentID, String title, String description, String location, String type, LocalDateTime startDateAndTime, LocalDateTime endDateAndTime, int customerID, int userID, int contactID) {
 
         this.appointmentID = appointmentID;
         this.title = title;
@@ -155,4 +156,7 @@ public class Appointment extends DataCache {
         this.contactID = contactId;
     }
 
+    public void setUpdatedBy(String updatedBy) {
+
+    }
 }

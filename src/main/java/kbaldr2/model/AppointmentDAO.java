@@ -8,21 +8,22 @@ import java.sql.*;
 import java.time.LocalDateTime;
 
 public class AppointmentDAO extends DAO<DataCache> {
-    
+
     private static final String SELECT_ALL_STMT = "SELECT * FROM appointments";
     private static final String DELETE_RECORD_STMT = "DELETE FROM appointments WHERE Appointment_ID = ";
     private static final ObservableList<DataCache> appointmentData = FXCollections.observableArrayList();
-    
+
     public AppointmentDAO(Connection connection) {
-        
+
         super(connection);
     }
-    
+
     /**
      * @return
      */
-    @Override public ObservableList<DataCache> getAll() throws SQLException {
-        
+    @Override
+    public ObservableList<DataCache> getAll() throws SQLException {
+
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(SELECT_ALL_STMT);
         int appointmentID;
@@ -36,9 +37,9 @@ public class AppointmentDAO extends DAO<DataCache> {
         int customerID;
         int userID;
         int contactID;
-        
+
         while (rs.next()) {
-            
+
             appointmentID = rs.getInt("Appointment_ID");
             title = rs.getString("Title");
             description = rs.getString("Description");
@@ -51,16 +52,19 @@ public class AppointmentDAO extends DAO<DataCache> {
             userID = rs.getInt("User_ID");
             contactID = rs.getInt("Contact_ID");
             //converts times to system time for display purposes.
-            appointmentData.add(new Appointment(appointmentID, title, description, location, type, Formatter.UTCtoLocal(startDateAndTime), Formatter.UTCtoLocal(endDateAndTime), createdBy, customerID, userID, contactID));
+            Appointment newApp = new Appointment(appointmentID, title, description, location, type, Formatter.UTCtoLocal(startDateAndTime), Formatter.UTCtoLocal(endDateAndTime), customerID, userID, contactID);
+            newApp.setCreatedBy(createdBy);
+            appointmentData.add(newApp);
         }
         return appointmentData;
     }
-    
+
     /**
      * @param item
      */
-    @Override public void create(DataCache item) {
-        
+    @Override
+    public void create(DataCache item) {
+
         Appointment appointment = (Appointment) item;
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Customer_ID, User_ID, Contact_ID) " + "VALUES (?, ?, ?, ?, ?, ?, NOW(),?, NOW(), ?, ?, ?)")) {
             statement.setString(1, appointment.getTitle());
@@ -78,25 +82,27 @@ public class AppointmentDAO extends DAO<DataCache> {
             throw new RuntimeException(e);
         }
     }
-    
+
     /**
      * @param item
      */
-    @Override public void update(DataCache item) {
-    
+    @Override
+    public void update(DataCache item) {
+
     }
-    
+
     /**
      * @param id
      */
-    @Override public void delete(int id) throws SQLException {
-        
+    @Override
+    public void delete(int id) throws SQLException {
+
         Statement statement = connection.createStatement();
         String deleteRecord = DELETE_RECORD_STMT + id + ";";
         statement.executeUpdate(deleteRecord);
-        
+
     }
-    
+
     /**
      * @param item
      */
@@ -118,5 +124,5 @@ public class AppointmentDAO extends DAO<DataCache> {
             throw new RuntimeException(e);
         }
     }*/
-    
+
 }
