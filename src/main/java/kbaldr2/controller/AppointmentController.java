@@ -139,14 +139,14 @@ public class AppointmentController implements Initializable {
         LocalDate currentDate = LocalDate.now();
 
         // Check if the selected date is not today
-        if (LocalTime.now().isBefore(bod) || LocalTime.now().isAfter(eod)) {
+        if (LocalTime.now().isBefore(bod) || LocalTime.now().isAfter(eod) || LocalDate.now().isBefore(selectedDate)) {
             System.out.println("The selected date is NOT today.");
             ObservableList<String> items = FXCollections.observableArrayList();
 
             LocalTime start = Formatter.ESTtoLocal(LocalTime.of(8, 0));
             LocalTime end = LocalTime.of(localCloseHour, localCloseMinute);
             for (LocalTime time = start; time.isBefore(end); time = time.plusMinutes(15)) {
-                items.add(Formatter.formatTime(time));
+                items.add(Formatter.formatTime(time));//TODO Decide if I want to have unformatted or formatted and update the time in populate method.
             }
             startTimeListView.setItems(items);
         } else {
@@ -154,7 +154,7 @@ public class AppointmentController implements Initializable {
             LocalTime start = LocalTime.of(now().getHour(), 0);
             LocalTime end = LocalTime.of(localCloseHour, localCloseMinute);
             for (LocalTime time = start; time.isBefore(end); time = time.plusMinutes(15)) {
-                items.add(Formatter.formatTime(time));
+                items.add(time.toString());
             }
             startTimeListView.setItems(items);
         }
@@ -173,7 +173,15 @@ public class AppointmentController implements Initializable {
 
 
     private void populateForm() {
+        customerCombo.setValue(DataCache.getCustomerName(appointToMod.getCustomerID()));
         contactCombo.setValue(DataCache.getContactName(appointToMod.getContactID()));
+        titleField.setText(appointToMod.getTitle());
+        typeField.setText(appointToMod.getType());
+        locationField.setText(appointToMod.getLocation());
+        descArea.setText(appointToMod.getDescription());
+        datePicker.setValue(appointToMod.getStartDateAndTime().toLocalDate());
+        startTimeListView.getSelectionModel().select(appointToMod.getStartDateAndTime().toLocalTime().toString());
+        System.out.println(appointToMod.getStartDateAndTime().toLocalTime().toString());
         //TODO populate rest of forms and dates and times
     }
 
@@ -209,7 +217,7 @@ public class AppointmentController implements Initializable {
     private void addModifyApp(ActionEvent event) {
 
 
-        if (isFilledOut()) {
+        if (isFilledOut() && !hasAppOverlap()) {
             String title = titleField.getText();
             String description = descArea.getText();
             String location = locationField.getText();
@@ -239,6 +247,12 @@ public class AppointmentController implements Initializable {
         } else {
             //TODO add alert about missed areas
         }
+    }
+
+    private boolean hasAppOverlap() {
+        boolean hasOverlap = false;
+        //TODO figure out how to find appointment overlap
+        return hasOverlap;
     }
 
     private LocalDateTime getStartDateTime() {
