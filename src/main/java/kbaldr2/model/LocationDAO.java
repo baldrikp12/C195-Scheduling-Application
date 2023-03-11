@@ -8,11 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DivisionDAO extends DAO<DataCache> {
+public class LocationDAO extends DAO<DataCache> {
     
     private static final ObservableList<DataCache> divisionData = FXCollections.observableArrayList();
     
-    public DivisionDAO(Connection connection) {
+    public LocationDAO(Connection connection) {
         
         super(connection);
     }
@@ -24,15 +24,17 @@ public class DivisionDAO extends DAO<DataCache> {
     @Override public ObservableList<DataCache> getAll() throws SQLException {
         
         Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("Select Division_ID, Division, Country_ID from first_level_divisions");
-        int id;
-        String name;
+        ResultSet rs = statement.executeQuery("Select first_level_divisions.Division_ID, first_level_divisions.Division, Countries.Country_ID, Countries.Country from first_level_divisions inner join Countries on first_level_divisions.Country_ID = Countries.Country_ID; ");
+        int divisionID;
         int countryID;
+        String divisionName;
+        String countryName;
         while (rs.next()) {
-            id = rs.getInt("Division_ID");
-            name = rs.getString("Division");
-            countryID = rs.getInt("Country_ID");
-            divisionData.add(new FirstLevelDivision(id, name, countryID));
+            divisionID = rs.getInt("first_level_divisions.Division_ID");
+            divisionName = rs.getString("first_level_divisions.Division");
+            countryID = rs.getInt("Countries.Country_ID");
+            countryName = rs.getString("Countries.Country");
+            divisionData.add(new Location(divisionID, divisionName, countryID, countryName));
         }
         return divisionData;
         

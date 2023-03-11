@@ -10,11 +10,12 @@ public abstract class DataCache {
     private static ObservableList<DataCache> allCustomers = FXCollections.observableArrayList();
     private static ObservableList<DataCache> allUsers = FXCollections.observableArrayList();
     private static ObservableList<DataCache> allContacts = FXCollections.observableArrayList();
-    private static ObservableList<DataCache> allFirstLevelDivision = FXCollections.observableArrayList();
+    private static ObservableList<DataCache> allLocations = FXCollections.observableArrayList();
     private static ObservableList<DataCache> allCountries = FXCollections.observableArrayList();
     private static int userId;
 
     public static ObservableList<DataCache> getAllAppointments() {
+        
 
         return allAppointments;
     }
@@ -54,14 +55,14 @@ public abstract class DataCache {
         DataCache.allContacts = allContacts;
     }
 
-    public static ObservableList<DataCache> getAllFirstLevelDivision() {
+    public static ObservableList<DataCache> getAllLocations() {
 
-        return allFirstLevelDivision;
+        return allLocations;
     }
 
-    public static void setAllFirstLevelDivision(ObservableList<DataCache> allFirstLevelDivision) {
+    public static void setAllLocations(ObservableList<DataCache> allFirstLevelDivision) {
 
-        DataCache.allFirstLevelDivision = allFirstLevelDivision;
+        DataCache.allLocations = allFirstLevelDivision;
     }
 
     public static ObservableList<DataCache> getAllCountries() {

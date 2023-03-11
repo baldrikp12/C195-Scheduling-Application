@@ -1,31 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="306.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/19"
-            fx:controller="kbaldr2.controller.CustomerController">
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="291.0" prefWidth="575.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kbaldr2.controller.CustomerController">
     <children>
         <HBox layoutX="303.0" layoutY="164.0" prefHeight="17.0" prefWidth="223.0" spacing="10.0">
             <children>
-                <RadioButton mnemonicParsing="false" text="United States"/>
-                <RadioButton mnemonicParsing="false" text="Canada"/>
-                <RadioButton mnemonicParsing="false" text="UK"/>
+                <RadioButton mnemonicParsing="false" selected="true" text="United States">
+               <toggleGroup>
+                  <ToggleGroup fx:id="regionGroup" />
+               </toggleGroup></RadioButton>
+                <RadioButton mnemonicParsing="false" text="Canada" toggleGroup="$regionGroup" />
+                <RadioButton mnemonicParsing="false" text="UK" toggleGroup="$regionGroup" />
             </children>
         </HBox>
-        <TextField disable="true" layoutX="48.0" layoutY="56.0" prefHeight="25.0" prefWidth="37.0" promptText="ID"/>
-        <TextField layoutX="48.0" layoutY="91.0" prefHeight="25.0" prefWidth="246.0" promptText="Full Name"/>
-        <TextField layoutX="48.0" layoutY="126.0" prefHeight="25.0" prefWidth="246.0" promptText="Address"/>
-        <TextField layoutX="48.0" layoutY="160.0" prefHeight="25.0" prefWidth="86.0" promptText="Postal"/>
-        <TextField layoutX="49.0" layoutY="193.0" promptText="Phoner Number"/>
-        <ChoiceBox layoutX="339.0" layoutY="193.0" prefWidth="150.0"/>
-        <Button layoutX="134.0" layoutY="246.0" mnemonicParsing="false" text="Add"/>
-        <Button layoutX="49.0" layoutY="246.0" mnemonicParsing="false" text="Cancel"/>
+        <TextField layoutX="48.0" layoutY="91.0" prefHeight="25.0" prefWidth="246.0" promptText="Full Name" />
+        <TextField layoutX="48.0" layoutY="126.0" prefHeight="25.0" prefWidth="246.0" promptText="Address" />
+        <TextField layoutX="48.0" layoutY="160.0" prefHeight="25.0" prefWidth="86.0" promptText="Postal" />
+        <TextField layoutX="49.0" layoutY="193.0" promptText="Phoner Number" />
+      <HBox layoutX="233.0" layoutY="247.0" spacing="20.0">
+         <children>
+              <Button fx:id="addModifyButton" mnemonicParsing="false" text="Add" />
+              <Button mnemonicParsing="false" text="Cancel" />
+         </children>
+      </HBox>
         <Label layoutX="147.0" layoutY="34.0" text="Create/Modify Customer">
             <font>
-                <Font name="System Bold" size="24.0"/>
+                <Font name="System Bold" size="24.0" />
             </font>
         </Label>
+      <ComboBox fx:id="divisionCombo" layoutX="340.0" layoutY="193.0" prefWidth="150.0" promptText="States" />
+      <HBox layoutX="14.0" layoutY="272.0" spacing="5.0">
+         <children>
+            <Label text="Current User:" />
+            <Label fx:id="userLabel" text="User" />
+         </children>
+      </HBox>
+      <HBox layoutX="49.0" layoutY="69.0">
+         <children>
+            <Label alignment="CENTER" text="CUST ID: " />
+            <Label fx:id="appIDField" alignment="CENTER" prefHeight="17.0" prefWidth="42.0" text="AUTO" />
+         </children>
+      </HBox>
     </children>
 </AnchorPane>

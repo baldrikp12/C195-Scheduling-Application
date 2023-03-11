@@ -23,7 +23,7 @@ import static java.time.LocalTime.now;
 
 public class AppointmentController implements Initializable {
     
-    Appointment appointToMod;
+    private Appointment appointToMod;
     private int localOpenHour;
     private int localOpenMinute;
     private int localCloseHour;
@@ -199,7 +199,6 @@ public class AppointmentController implements Initializable {
         
         while (endTime.isBefore(LocalTime.of(localCloseHour, localCloseMinute))) {
             endTime = endTime.plusMinutes(15);
-            //items.add(endTime.format(DateTimeFormatter.ofPattern("hh:mm a")));
             items.add(Formatter.formatTime(endTime));
             
         }
@@ -255,10 +254,10 @@ public class AppointmentController implements Initializable {
     private boolean hasAppOverlap() {
         //TODO test overlap check
         String alerts = "";
+        String customerName = customerCombo.getValue();
         for (DataCache item : DataCache.getAllAppointments()) {
             Appointment app = (Appointment) item;
-            if (app.getCustomerID() == DataCache.getCustomerID(customerCombo.getValue())) {
-                System.out.println(app.getCustomerID()+"\n"+DataCache.getUserID(userLabel.getText())+"\n"+getStartDateTime()+"\n"+getEndDateTime()+"\n"+app.getStartDateAndTime()+"\n"+app.getEndDateAndTime());
+            if (app.getCustomerID() == DataCache.getCustomerID(customerName)) {
                 if ((getStartDateTime().isAfter(app.getStartDateAndTime()) && getStartDateTime().isBefore(app.getEndDateAndTime())) || (getEndDateTime().isAfter(app.getStartDateAndTime()) && getEndDateTime().isBefore(app.getEndDateAndTime()))) {
                     Alerts.showWarning("An appointment already exists in this time period", "Appointment Overlap");
                     return true;
