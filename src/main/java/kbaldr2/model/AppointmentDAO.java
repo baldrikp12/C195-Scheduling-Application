@@ -71,8 +71,8 @@ public class AppointmentDAO extends DAO<DataCache> {
             statement.setString(2, appointment.getDescription());
             statement.setString(3, appointment.getLocation());
             statement.setString(4, appointment.getType());
-            statement.setTimestamp(5, Timestamp.valueOf(appointment.getStartDateAndTime()));
-            statement.setTimestamp(6, Timestamp.valueOf(appointment.getEndDateAndTime()));
+            statement.setTimestamp(5, Timestamp.valueOf(Formatter.localToUTC(appointment.getStartDateAndTime())));
+            statement.setTimestamp(6, Timestamp.valueOf(Formatter.localToUTC(appointment.getEndDateAndTime())));
             statement.setString(7, appointment.getCreatedBy());
             statement.setInt(8, appointment.getCustomerID());
             statement.setInt(9, appointment.getUserID());

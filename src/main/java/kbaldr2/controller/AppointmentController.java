@@ -225,7 +225,7 @@ public class AppointmentController implements Initializable {
                 if (isAdding) {
                     String createdBy = DAO.getUsername();
                     
-                    Appointment newApp = new Appointment(0, title, description, location, type, Formatter.localToUTC(startDateTime), Formatter.localToUTC(endDateTime), customerID, userID, contactID);
+                    Appointment newApp = new Appointment(0, title, description, location, type, startDateTime, endDateTime, customerID, userID, contactID);
                     newApp.setCreatedBy(createdBy);
                     
                     DBConnection.openConnection();
@@ -237,7 +237,7 @@ public class AppointmentController implements Initializable {
                 } else {
                     String updatedBy = DAO.getUsername();
                     
-                    Appointment newApp = new Appointment(0, title, description, location, type, Formatter.localToUTC(startDateTime), Formatter.localToUTC(endDateTime), customerID, userID, contactID);
+                    Appointment newApp = new Appointment(0, title, description, location, type, startDateTime, endDateTime, customerID, userID, contactID);
                     newApp.setUpdatedBy(updatedBy);
                     DBConnection.openConnection();
                     DAO<DataCache> dao = new AppointmentDAO(DBConnection.getConnection());
@@ -245,6 +245,7 @@ public class AppointmentController implements Initializable {
                     DataCache.addAppointment(newApp);
                     DBConnection.closeConnection();
                 }
+                close();
             }
         } else {
             Alerts.showAlert("Please fill form out completely", "Empty Fields");
@@ -256,7 +257,8 @@ public class AppointmentController implements Initializable {
         String alerts = "";
         for (DataCache item : DataCache.getAllAppointments()) {
             Appointment app = (Appointment) item;
-            if (app.getCustomerID() == DataCache.getUserID(userLabel.getText())) {
+            if (app.getCustomerID() == DataCache.getCustomerID(customerCombo.getValue())) {
+                System.out.println(app.getCustomerID()+"\n"+DataCache.getUserID(userLabel.getText())+"\n"+getStartDateTime()+"\n"+getEndDateTime()+"\n"+app.getStartDateAndTime()+"\n"+app.getEndDateAndTime());
                 if ((getStartDateTime().isAfter(app.getStartDateAndTime()) && getStartDateTime().isBefore(app.getEndDateAndTime())) || (getEndDateTime().isAfter(app.getStartDateAndTime()) && getEndDateTime().isBefore(app.getEndDateAndTime()))) {
                     Alerts.showWarning("An appointment already exists in this time period", "Appointment Overlap");
                     return true;
@@ -319,7 +321,6 @@ public class AppointmentController implements Initializable {
                 }
             }
         }
-        
         return isAllFilled;
     }
     
