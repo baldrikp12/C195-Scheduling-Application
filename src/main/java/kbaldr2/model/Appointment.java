@@ -131,11 +131,6 @@ public class Appointment extends DataCache {
         return customerID;
     }
 
-    public void setCustomerID(int customerID) {
-
-        this.customerID = customerID;
-    }
-
     public int getUserID() {
 
         return userID;
@@ -159,4 +154,9 @@ public class Appointment extends DataCache {
     public void setUpdatedBy(String updatedBy) {
 
     }
+    
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+    
 }

@@ -173,9 +173,12 @@ public class AppointmentController implements Initializable {
         locationField.setText(appointToMod.getLocation());
         descArea.setText(appointToMod.getDescription());
         datePicker.setValue(appointToMod.getStartDateAndTime().toLocalDate());
+        
+        //TODO Time isn't getting selected
         startTimeListView.getSelectionModel().select(appointToMod.getStartDateAndTime().toLocalTime().toString());
-        System.out.println(appointToMod.getStartDateAndTime().toLocalTime().toString());
+        //startTimeListView.scrollTo(startTimeListView.getSelectionModel().getSelectedIndex());
         endTimeListView.getSelectionModel().select(appointToMod.getEndDateAndTime().toLocalTime().toString());
+        //endTimeListView.scrollTo(endTimeListView.getSelectionModel().getSelectedIndex());
         //TODO get times to be visible
     }
     
@@ -217,33 +220,30 @@ public class AppointmentController implements Initializable {
             int customerID = DataCache.getCustomerID(customerCombo.getValue());
             int contactID = DataCache.getContactID(contactCombo.getValue());
             int userID = DataCache.getUserID(userLabel.getText());
+            Appointment newApp = new Appointment(0, title, description, location, type, startDateTime, endDateTime, customerID, userID, contactID);
+            
             System.out.println(customerCombo.getValue() + "   " + customerID + "\n" + contactCombo.getValue() + "    " + contactID + "\n" + userLabel.getText() + "    " + userID + "\n");
             
             if (!hasAppOverlap()) {
+                DBConnection.openConnection();
+                DAO<DataCache> dao = new AppointmentDAO(DBConnection.getConnection());
                 
                 if (isAdding) {
                     String createdBy = DAO.getUsername();
-                    
-                    Appointment newApp = new Appointment(0, title, description, location, type, startDateTime, endDateTime, customerID, userID, contactID);
                     newApp.setCreatedBy(createdBy);
                     
-                    DBConnection.openConnection();
-                    DAO<DataCache> dao = new AppointmentDAO(DBConnection.getConnection());
                     dao.create(newApp);
-                    DataCache.addAppointment(newApp);
-                    DBConnection.closeConnection();
                     
                 } else {
+                    //TODO modifying is adding a new record. need to replace or update existing record. same for customer.
                     String updatedBy = DAO.getUsername();
-                    
-                    Appointment newApp = new Appointment(0, title, description, location, type, startDateTime, endDateTime, customerID, userID, contactID);
                     newApp.setUpdatedBy(updatedBy);
-                    DBConnection.openConnection();
-                    DAO<DataCache> dao = new AppointmentDAO(DBConnection.getConnection());
+                    
                     dao.update(newApp);
-                    DataCache.addAppointment(newApp);
-                    DBConnection.closeConnection();
+                    
                 }
+                DataCache.addAppointment(newApp);
+                DBConnection.closeConnection();
                 close();
             }
         } else {
@@ -252,7 +252,7 @@ public class AppointmentController implements Initializable {
     }
     
     private boolean hasAppOverlap() {
-        //TODO test overlap check
+        
         String alerts = "";
         String customerName = customerCombo.getValue();
         for (DataCache item : DataCache.getAllAppointments()) {
@@ -310,18 +310,19 @@ public class AppointmentController implements Initializable {
                 } else {
                     lv.setStyle("");
                 }
-            } else if (node instanceof MenuButton mb) {
-                if (mb.getText().trim().isEmpty()) {
-                    mb.setStyle("-fx-border-color: RED;");
+            } else if (node instanceof ComboBox cb) {
+                if (cb.getSelectionModel().isEmpty()) {
+                    cb.setStyle("-fx-border-color: RED;");
                     isAllFilled = false;
                 } else {
-                    System.out.println(mb.getText());
-                    mb.setStyle("");
+                    System.out.println(cb.getValue());
+                    cb.setStyle("");
                 }
             }
         }
         return isAllFilled;
     }
+    
     
     @FXML private void close() {
         

@@ -8,6 +8,8 @@ public class Customer extends DataCache {
     private String postalCode;
     private String phone;
     private int divisionID;
+    private String createdBy;
+    private String updatedBy;
     
     
     public Customer(int customerID, String name, String address, String postalCode, String phone, int divisionID) {
@@ -28,7 +30,7 @@ public class Customer extends DataCache {
     
     public void setCustomerID(int customerID) {
         
-        this.customerID = this.customerID;
+        this.customerID = customerID;
     }
     
     public String getName() {
@@ -79,6 +81,26 @@ public class Customer extends DataCache {
     public void setDivisionID(int divisionID) {
         
         this.divisionID = divisionID;
+    }
+    
+    public void setCreatedBy(String createdBy) {
+        
+        this.createdBy = createdBy;
+    }
+    
+    public void setUpdatedBy(String updatedBy) {
+        
+        this.updatedBy = updatedBy;
+    }
+    
+    public String getCreatedBy() {
+        
+        return createdBy;
+    }
+    
+    public String getUpdatedBy() {
+        
+        return updatedBy;
     }
     
 }

@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
 import javafx.stage.WindowEvent;
 import kbaldr2.helper.Alerts;
@@ -33,9 +34,13 @@ public class DashboardController implements Initializable {
     private String user = "";
     private boolean viewingAppointments = true;
     @FXML
+    private RadioButton allCustsRadio;
+    @FXML
     private Label appAlertLabel;
     @FXML
     private Label appAlertInfoLabel;
+    @FXML
+    private Label viewingLabel;
     @FXML
     private TableView<DataCache> dataCacheTable;
     @FXML
@@ -113,16 +118,6 @@ public class DashboardController implements Initializable {
         DBConnection.closeConnection();
     }
     
-    private void getAllCountries() throws SQLException {
-        
-        DBConnection.openConnection();
-        DAO<DataCache> dao = new CountryDAO(DBConnection.getConnection());
-        DataCache.setAllCountries(dao.getAll());
-        DataCache.addToAllObjectList(DataCache.getAllCountries());
-        
-        DBConnection.closeConnection();
-    }
-    
     private void fifteenMinuteCheck() {
         
         LocalDateTime now = LocalDateTime.now();
@@ -168,7 +163,7 @@ public class DashboardController implements Initializable {
     
     
     @FXML private void viewAppsThisMonth() {
-        
+        viewingLabel.setText("Appointments");
         if (!viewingAppointments) {
             dataCacheTable.getColumns().clear();
             TableFormatter.buildAppTables();
@@ -191,7 +186,7 @@ public class DashboardController implements Initializable {
     }
     
     @FXML private void viewAppsThisWeek() {
-        
+        viewingLabel.setText("Appointments");
         if (!viewingAppointments) {
             dataCacheTable.getColumns().clear();
             TableFormatter.buildAppTables();
@@ -216,7 +211,7 @@ public class DashboardController implements Initializable {
     }
     
     @FXML private void viewAllApps() {
-        
+        viewingLabel.setText("Appointments");
         if (!viewingAppointments) {
             dataCacheTable.getColumns().clear();
             TableFormatter.buildAppTables();
@@ -227,7 +222,7 @@ public class DashboardController implements Initializable {
     }
     
     @FXML private void viewAllCusts() {
-        
+        viewingLabel.setText("Customers");
         if (viewingAppointments) {
             dataCacheTable.getColumns().clear();
             TableFormatter.buildCustTables();
@@ -250,17 +245,17 @@ public class DashboardController implements Initializable {
         DataCache item = dataCacheTable.getSelectionModel().getSelectedItem();
         disableDashboard(true);
         
-        if (item instanceof Appointment) {
-            SceneManager.buildAppointmentScene();
-            SceneManager.getStage("appointment").setOnCloseRequest(new EventHandler<WindowEvent>() {
+        if (allCustsRadio.isSelected()) {
+            SceneManager.buildCustomerScene();
+            SceneManager.getStage("customer").setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override public void handle(WindowEvent event) {
                     
                     disableDashboard(false);
                 }
             });
         } else {
-            SceneManager.buildCustomerScene();
-            SceneManager.getStage("customer").setOnCloseRequest(new EventHandler<WindowEvent>() {
+            SceneManager.buildAppointmentScene();
+            SceneManager.getStage("appointment").setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override public void handle(WindowEvent event) {
                     
                     disableDashboard(false);
@@ -275,7 +270,7 @@ public class DashboardController implements Initializable {
     }
     
     @FXML private void modifyRecord() throws IOException {
-        //TODO no more setScene. sending an item to mod will trigger modify mode
+        
         DataCache item = dataCacheTable.getSelectionModel().getSelectedItem();
         disableDashboard(true);
         

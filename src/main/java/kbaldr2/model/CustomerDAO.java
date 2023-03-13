@@ -2,11 +2,9 @@ package kbaldr2.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import kbaldr2.helper.Formatter;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class CustomerDAO extends DAO<DataCache> {
     
@@ -51,7 +49,23 @@ public class CustomerDAO extends DAO<DataCache> {
      * @param item
      */
     @Override public void create(DataCache item) {
-    
+        Customer customer = (Customer) item;
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO customers (Customer_Name,Address,Postal_Code,Phone,Create_Date,Created_By,Division_ID) " + "VALUES (?, ?, ?, ?, NOW(),?,?)", Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, customer.getName());
+            statement.setString(2, customer.getAddress());
+            statement.setString(3, customer.getPostalCode());
+            statement.setString(4, customer.getPhone());
+            statement.setString(5, customer.getCreatedBy());
+            statement.setInt(6, customer.getDivisionID());
+            statement.executeUpdate();
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int primaryKey = generatedKeys.getInt(1);
+                customer.setCustomerID(primaryKey);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     
     }
     
@@ -59,7 +73,19 @@ public class CustomerDAO extends DAO<DataCache> {
      * @param item
      */
     @Override public void update(DataCache item) {
-    
+        Customer customer = (Customer) item;
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = NOW(), Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?")) {
+            statement.setString(1, customer.getName());
+            statement.setString(2, customer.getAddress());
+            statement.setString(3, customer.getPostalCode());
+            statement.setString(4, customer.getPhone());
+            statement.setString(5, customer.getUpdatedBy());
+            statement.setInt(6, customer.getDivisionID());
+            statement.setInt(7, customer.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     /**

@@ -129,7 +129,16 @@ public abstract class DataCache {
         }
         return id;
     }
-
+    public static int getFirstDivisionID(String divisionName) {
+        int id = -1;
+        for (DataCache item : getAllLocations()) {
+            Location theDivision = (Location) item;
+            if (theDivision.getDivisionName().equals(divisionName)) {
+                return theDivision.getId();
+            }
+        }
+        return id;
+    }
     public static String getContactName(int contactID) {
         String name = "";
         for (DataCache item : getAllContacts()) {
@@ -140,6 +149,7 @@ public abstract class DataCache {
         }
         return name;
     }
+    
 
     public static String getCustomerName(int customerID) {
         String name = "";

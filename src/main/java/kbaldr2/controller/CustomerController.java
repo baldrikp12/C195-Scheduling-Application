@@ -1,12 +1,16 @@
 package kbaldr2.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import kbaldr2.model.Customer;
-import kbaldr2.model.DAO;
-import kbaldr2.model.DataCache;
-import kbaldr2.model.Location;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import kbaldr2.helper.Alerts;
+import kbaldr2.helper.SceneManager;
+import kbaldr2.model.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,25 +20,20 @@ public class CustomerController implements Initializable {
     private Customer customerToMod;
     private boolean isAdding = true;
     @FXML
-    private Button addModifyButton;
-    
+    private AnchorPane parentPane;
     @FXML
     private Label addModLabel;
     
     @FXML
-    private TextField addressField;
+    private Button addModifyButton;
     
     @FXML
-    private RadioButton caRadio;
-    
-    @FXML
-    private Button cancelButton;
-    
-    @FXML
-    private Label custIDField;
+    private ComboBox<String> divisionCombo;
     
     @FXML
     private TextField nameField;
+    @FXML
+    private TextField addressField;
     
     @FXML
     private TextField phoneField;
@@ -43,16 +42,11 @@ public class CustomerController implements Initializable {
     private TextField postalField;
     
     @FXML
-    private RadioButton ukRadio;
-    
-    @FXML
-    private RadioButton usRadio;
-    
-    @FXML
-    private ComboBox<String> divisionCombo;
+    private ToggleGroup regionGroup;
     
     @FXML
     private Label userLabel;
+    
     
     /**
      * @param url
@@ -63,15 +57,11 @@ public class CustomerController implements Initializable {
         divisionCombo.setItems(Location.getUs());
         userLabel.setText(DAO.getUsername());
         //TODO 1: populate form when modifying
-        //TODO 2: set up radio button actions
-        //TODO 3: set up addmodifybutton method
-        //TODO 4: need to check if string contains any string from divisioncombo.
-        //TODO 5: verify no empty fields
     }
     
     public void setCustomerToModify(DataCache theItem) {
         
-        addModLabel.setText("Modify Appointment");
+        addModLabel.setText("Update Appointment");
         addModifyButton.setText("Update");
         customerToMod = (Customer) theItem;
         isAdding = false;
@@ -80,6 +70,92 @@ public class CustomerController implements Initializable {
     
     private void populateForm() {
     
+    }
+    
+    @FXML private void addModifyCust(ActionEvent event) {
+        
+        if (isFilledOut()) {
+            String name = nameField.getText();
+            String address = addressField.getText();
+            String postal = postalField.getText();
+            String phone = phoneField.getText();
+            int firstDivision = DataCache.getFirstDivisionID(divisionCombo.getValue());
+            int userID = DataCache.getUserID(userLabel.getText());
+            
+            Customer newCust = new Customer(0, name, address, postal, phone, firstDivision);
+            //Customer newCust = new Customer(0, "test", "123 lane", "12345", "111-111-1111", 103);
+            DBConnection.openConnection();
+            DAO<DataCache> dao = new CustomerDAO(DBConnection.getConnection());
+            if (isAdding) {
+                String createdBy = DAO.getUsername();
+                newCust.setCreatedBy(createdBy);
+                
+                dao.create(newCust);
+                
+            } else {
+                String updatedBy = DAO.getUsername();
+                newCust.setUpdatedBy(updatedBy);
+                
+                dao.update(newCust);
+                
+            }
+            
+            DataCache.addCustomer(newCust);
+            DBConnection.closeConnection();
+            close();
+            
+        } else {
+            Alerts.showAlert("Please fill form out completely", "Empty Fields");
+        }
+    }
+    
+    private boolean isFilledOut() {
+        
+        boolean isAllFilled = true;
+        for (Node node : parentPane.getChildren()) {
+            if (node instanceof TextField tf) {
+                if (tf.getText().trim().isEmpty()) {
+                    tf.setStyle("-fx-border-color: RED;");
+                    isAllFilled = false;
+                } else {
+                    tf.setStyle("");
+                }
+            } else if (node instanceof ComboBox cb) {
+                if (cb.getSelectionModel().isEmpty()) {
+                    cb.setStyle("-fx-border-color: RED;");
+                    isAllFilled = false;
+                } else {
+                    System.out.println(cb.getValue());
+                    cb.setStyle("");
+                }
+            }
+        }
+        return isAllFilled;
+    }
+    
+    @FXML private void setUSList(ActionEvent event) {
+        
+        divisionCombo.setItems(Location.getUs());
+        divisionCombo.setPromptText("States");
+    }
+    
+    @FXML private void setCAList(ActionEvent event) {
+        
+        divisionCombo.setItems(Location.getCa());
+        divisionCombo.setPromptText("Provinces");
+    }
+    
+    @FXML private void setUKList(ActionEvent event) {
+        
+        divisionCombo.setItems(Location.getUk());
+        divisionCombo.setPromptText("Countries");
+    }
+    
+    
+    @FXML private void close() {
+        
+        Stage custStage = SceneManager.getStage("customer");
+        SceneManager.getStage("customer").fireEvent(new WindowEvent(custStage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
     
 }

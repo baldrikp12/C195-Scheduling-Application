@@ -8,22 +8,21 @@ import java.sql.*;
 import java.time.LocalDateTime;
 
 public class AppointmentDAO extends DAO<DataCache> {
-
+    
     private static final String SELECT_ALL_STMT = "SELECT * FROM appointments";
     private static final String DELETE_RECORD_STMT = "DELETE FROM appointments WHERE Appointment_ID = ";
     private static final ObservableList<DataCache> appointmentData = FXCollections.observableArrayList();
-
+    
     public AppointmentDAO(Connection connection) {
-
+        
         super(connection);
     }
-
+    
     /**
      * @return
      */
-    @Override
-    public ObservableList<DataCache> getAll() throws SQLException {
-
+    @Override public ObservableList<DataCache> getAll() throws SQLException {
+        
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(SELECT_ALL_STMT);
         int appointmentID;
@@ -37,9 +36,9 @@ public class AppointmentDAO extends DAO<DataCache> {
         int customerID;
         int userID;
         int contactID;
-
+        
         while (rs.next()) {
-
+            
             appointmentID = rs.getInt("Appointment_ID");
             title = rs.getString("Title");
             description = rs.getString("Description");
@@ -58,15 +57,14 @@ public class AppointmentDAO extends DAO<DataCache> {
         }
         return appointmentData;
     }
-
+    
     /**
      * @param item
      */
-    @Override
-    public void create(DataCache item) {
-
+    @Override public void create(DataCache item) {
+        
         Appointment appointment = (Appointment) item;
-        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Customer_ID, User_ID, Contact_ID) " + "VALUES (?, ?, ?, ?, ?, ?, NOW(),?, NOW(), ?, ?, ?)")) {
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Customer_ID, User_ID, Contact_ID) " + "VALUES (?, ?, ?, ?, ?, ?, NOW(),?, NOW(), ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, appointment.getTitle());
             statement.setString(2, appointment.getDescription());
             statement.setString(3, appointment.getLocation());
@@ -78,51 +76,54 @@ public class AppointmentDAO extends DAO<DataCache> {
             statement.setInt(9, appointment.getUserID());
             statement.setInt(10, appointment.getContactID());
             statement.executeUpdate();
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int primaryKey = generatedKeys.getInt(1);
+                appointment.setAppointmentID(primaryKey);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
-    /**
-     * @param item
-     */
-    @Override
-    public void update(DataCache item) {
-
-    }
-
-    /**
-     * @param id
-     */
-    @Override
-    public void delete(int id) throws SQLException {
-
-        Statement statement = connection.createStatement();
-        String deleteRecord = DELETE_RECORD_STMT + id + ";";
-        statement.executeUpdate(deleteRecord);
-
-    }
-
-    /**
-     * @param item
-     */
     
-/*    public void create(Appointment item) {
+    /**
+     * @param item
+     */
+    @Override public void update(DataCache item) {
         
-        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO appointments (Title, Description, Location, Type, Start, End, Create_Date, Last_Update, Customer_ID, User_ID, Contact_ID) " + "VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, ?, ?)")) {
-            statement.setString(1, item.getTitle());
-            statement.setString(2, item.getDescription());
-            statement.setString(3, item.getLocation());
-            statement.setString(4, item.getType());
-            statement.setTimestamp(5, Timestamp.valueOf(item.getStartDateAndTimeFormatted()));
-            statement.setTimestamp(6, Timestamp.valueOf(item.getEndDateAndTimeFormatted()));
-            statement.setInt(7, item.getCustomerID());
-            statement.setInt(8, item.getUserID());
-            statement.setInt(9, item.getContactID());
+        Appointment appointment = (Appointment) item;
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = NOW(), Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?")) {
+            statement.setString(1, appointment.getTitle());
+            statement.setString(2, appointment.getDescription());
+            statement.setString(3, appointment.getLocation());
+            statement.setString(4, appointment.getType());
+            statement.setTimestamp(5, Timestamp.valueOf(Formatter.localToUTC(appointment.getStartDateAndTime())));
+            statement.setTimestamp(6, Timestamp.valueOf(Formatter.localToUTC(appointment.getEndDateAndTime())));
+            statement.setString(7, appointment.getUpdatedBy());
+            statement.setInt(8, appointment.getCustomerID());
+            statement.setInt(9, appointment.getUserID());
+            statement.setInt(10, appointment.getContactID());
+            statement.setInt(11, appointment.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }*/
-
+    }
+    
+    /**
+     * @param id
+     */
+    @Override public void delete(int id) throws SQLException {
+        
+        Statement statement = connection.createStatement();
+        String deleteRecord = DELETE_RECORD_STMT + id + ";";
+        statement.executeUpdate(deleteRecord);
+        
+    }
+    
+    /**
+     * @param item
+     */
+    
+    
 }
