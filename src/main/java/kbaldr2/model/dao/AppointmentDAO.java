@@ -1,8 +1,10 @@
-package kbaldr2.model;
+package kbaldr2.model.dao;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import kbaldr2.helper.Formatter;
+import kbaldr2.model.Appointment;
+import kbaldr2.model.DataCache;
 
 import java.sql.*;
 import java.time.LocalDateTime;

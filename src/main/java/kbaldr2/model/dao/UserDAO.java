@@ -1,7 +1,9 @@
-package kbaldr2.model;
+package kbaldr2.model.dao;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import kbaldr2.model.DataCache;
+import kbaldr2.model.User;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
