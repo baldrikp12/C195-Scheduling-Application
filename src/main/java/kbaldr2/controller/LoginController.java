@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import kbaldr2.helper.SceneManager;
-import kbaldr2.model.DAO;
+import kbaldr2.model.dao.DAO;
 import kbaldr2.model.DataCache;
 
 import java.io.*;

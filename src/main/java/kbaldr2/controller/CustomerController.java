@@ -11,6 +11,8 @@ import javafx.stage.WindowEvent;
 import kbaldr2.helper.Alerts;
 import kbaldr2.helper.SceneManager;
 import kbaldr2.model.*;
+import kbaldr2.model.dao.CustomerDAO;
+import kbaldr2.model.dao.DAO;
 
 import java.net.URL;
 import java.util.ResourceBundle;

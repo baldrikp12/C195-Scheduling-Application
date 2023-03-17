@@ -14,6 +14,8 @@ import kbaldr2.helper.Alerts;
 import kbaldr2.helper.Formatter;
 import kbaldr2.helper.SceneManager;
 import kbaldr2.model.*;
+import kbaldr2.model.dao.AppointmentDAO;
+import kbaldr2.model.dao.DAO;
 
 import java.net.URL;
 import java.time.*;
@@ -144,7 +146,7 @@ public class AppointmentController implements Initializable {
             LocalTime start = Formatter.ESTtoLocal(LocalTime.of(8, 0));
             LocalTime end = LocalTime.of(localCloseHour, localCloseMinute);
             for (LocalTime time = start; time.isBefore(end); time = time.plusMinutes(15)) {
-                items.add(Formatter.formatTime(time));//TODO Decide if I want to have unformatted or formatted and update the time in populate method.
+                items.add(time.toString());
             }
             startTimeListView.setItems(items);
         } else {
@@ -179,13 +181,11 @@ public class AppointmentController implements Initializable {
         locationField.setText(appointToMod.getLocation());
         descArea.setText(appointToMod.getDescription());
         datePicker.setValue(appointToMod.getStartDateAndTime().toLocalDate());
-
-        //TODO Time isn't getting selected
         startTimeListView.getSelectionModel().select(appointToMod.getStartDateAndTime().toLocalTime().toString());
-        //startTimeListView.scrollTo(startTimeListView.getSelectionModel().getSelectedIndex());
+        startTimeListView.scrollTo(startTimeListView.getSelectionModel().getSelectedIndex());
+        updateEndTime();
         endTimeListView.getSelectionModel().select(appointToMod.getEndDateAndTime().toLocalTime().toString());
-        //endTimeListView.scrollTo(endTimeListView.getSelectionModel().getSelectedIndex());
-        //TODO get times to be visible
+        endTimeListView.scrollTo(endTimeListView.getSelectionModel().getSelectedIndex());
     }
 
     @FXML

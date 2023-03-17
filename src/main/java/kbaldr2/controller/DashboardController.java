@@ -15,6 +15,7 @@ import kbaldr2.helper.Alerts;
 import kbaldr2.helper.SceneManager;
 import kbaldr2.helper.TableFormatter;
 import kbaldr2.model.*;
+import kbaldr2.model.dao.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -365,7 +366,7 @@ public class DashboardController implements Initializable {
 
         /**DataCache.getAllAppointments().clear();
          DataCache.getAllAppointments().clear();
-         DataCache.getAllContacts().clear();
+         DataCache.getAllContacts().clear();a
          DataCache.getAllCountries().clear();
          DataCache.getAllFirstLevelDivision().clear();*/
         DataCache.clearObjects();

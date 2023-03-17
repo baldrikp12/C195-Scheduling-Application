@@ -9,4 +9,5 @@ module kbaldr2.main {
     exports kbaldr2.main;
     opens kbaldr2.main to javafx.fxml;
     opens kbaldr2.model to javafx.base;
+    opens kbaldr2.model.dao to javafx.base;
 }
