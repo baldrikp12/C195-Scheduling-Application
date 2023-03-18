@@ -4,14 +4,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="parentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="463.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kbaldr2.controller.AppointmentController">
+<AnchorPane fx:id="parentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="396.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kbaldr2.controller.AppointmentController">
     <children>
         <TextField fx:id="titleField" layoutX="14.0" layoutY="131.0" prefHeight="25.0" prefWidth="141.0" promptText="Title" />
-        <TextArea fx:id="descArea" layoutX="9.0" layoutY="203.0" prefHeight="123.0" prefWidth="200.0" promptText="Description" wrapText="true" />
+        <TextArea fx:id="descArea" layoutX="14.0" layoutY="203.0" prefHeight="123.0" prefWidth="200.0" promptText="Description" wrapText="true" />
         <TextField fx:id="locationField" layoutX="14.0" layoutY="158.0" prefHeight="25.0" prefWidth="303.0" promptText="Location" />
         <TextField fx:id="typeField" layoutX="167.0" layoutY="131.0" promptText="Type" />
         <DatePicker fx:id="datePicker" layoutX="218.0" layoutY="203.0" onAction="#updateStartTime" prefHeight="25.0" prefWidth="141.0" promptText="Date" />
-        <HBox layoutX="152.0" layoutY="404.0" spacing="25.0">
+        <HBox layoutX="150.0" layoutY="364.0" spacing="25.0">
             <children>
                 <Button fx:id="addModifyButton" mnemonicParsing="false" onAction="#addModifyApp" text="Create" />
                 <Button mnemonicParsing="false" onAction="#close" text="Cancel" />
@@ -30,7 +30,7 @@
       <Label layoutX="172.0" layoutY="80.0" text="Contact" />
       <ComboBox fx:id="customerCombo" layoutX="14.0" layoutY="97.0" prefWidth="150.0" />
       <ComboBox fx:id="contactCombo" layoutX="173.0" layoutY="97.0" prefWidth="150.0" />
-      <HBox layoutX="1.0" layoutY="440.0" spacing="5.0">
+      <HBox layoutX="17.0" layoutY="389.0" spacing="5.0">
          <children>
             <Label text="Current User:" />
             <Label fx:id="userLabel" text="User" />
@@ -39,7 +39,7 @@
       <HBox layoutX="14.0" layoutY="63.0">
          <children>
             <Label alignment="CENTER" text="APP ID: " />
-            <Label fx:id="appIDField" alignment="CENTER" prefHeight="17.0" prefWidth="42.0" text="AUTO" />
+            <Label fx:id="appIDField" alignment="TOP_LEFT" prefHeight="17.0" prefWidth="42.0" text="AUTO" />
          </children>
       </HBox>
     </children>

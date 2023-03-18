@@ -107,6 +107,8 @@ public class DashboardController implements Initializable {
         DBConnection.openConnection();
         DAO<DataCache> dao = new ContactDAO(DBConnection.getConnection());
         DataCache.setAllContacts(dao.getAll());
+        DataCache.addToAllObjectList(DataCache.getAllContacts());
+        
         DBConnection.closeConnection();
     }
 

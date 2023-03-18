@@ -11,7 +11,7 @@ public abstract class DataCache {
     private static ObservableList<DataCache> allUsers = FXCollections.observableArrayList();
     private static ObservableList<DataCache> allContacts = FXCollections.observableArrayList();
     private static ObservableList<DataCache> allLocations = FXCollections.observableArrayList();
-    private static ObservableList<DataCache> allCountries = FXCollections.observableArrayList();
+
     private static int userId;
 
     public static ObservableList<DataCache> getAllAppointments() {
@@ -63,16 +63,6 @@ public abstract class DataCache {
     public static void setAllLocations(ObservableList<DataCache> allFirstLevelDivision) {
 
         DataCache.allLocations = allFirstLevelDivision;
-    }
-
-    public static ObservableList<DataCache> getAllCountries() {
-
-        return allCountries;
-    }
-
-    public static void setAllCountries(ObservableList<DataCache> allCountries) {
-
-        DataCache.allCountries = allCountries;
     }
 
     public static void setUserId(int userId) {
@@ -129,6 +119,26 @@ public abstract class DataCache {
         }
         return id;
     }
+    public static String getDivisionName(int divisionID){
+        String name = "";
+        for (DataCache item : getAllLocations()) {
+            Location loc = (Location) item;
+            if (loc.getId() == divisionID) {
+                return loc.getDivisionName();
+            }
+        }
+        return name;
+    }
+    public static int getCountryIDFromDivisionID(int divisionID){
+        int id = -1;
+        for (DataCache item : getAllLocations()) {
+            Location theLocation = (Location) item;
+            if (theLocation.getId() == divisionID) {
+                return theLocation.getCountryID();
+            }
+        }
+        return id;
+    }
     public static int getFirstDivisionID(String divisionName) {
         int id = -1;
         for (DataCache item : getAllLocations()) {
@@ -150,7 +160,6 @@ public abstract class DataCache {
         return name;
     }
     
-
     public static String getCustomerName(int customerID) {
         String name = "";
         for (DataCache item : getAllCustomers()) {
