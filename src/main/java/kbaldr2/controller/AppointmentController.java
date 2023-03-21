@@ -83,12 +83,21 @@ public class AppointmentController implements Initializable {
         initializeBusinessHours();
         updateStartTime();
         
-        datePicker.setValue(LocalDate.now());
+        // Check if the current time is after business hours
+        LocalTime currentTime = LocalTime.now();
+        LocalTime closeTime = LocalTime.of(localCloseHour, localCloseMinute);
+        LocalDate updatedDate = LocalDate.now();
+        if (currentTime.isAfter(closeTime)) {
+            updatedDate = LocalDate.now().plusDays(1);
+        }
+        final LocalDate setDateTime = updatedDate;
+        
+        datePicker.setValue(setDateTime);
         datePicker.setDayCellFactory(datePicker -> new DateCell() {
             @Override public void updateItem(LocalDate date, boolean empty) {
                 
                 super.updateItem(date, empty);
-                if (date.isBefore(LocalDate.now())) {
+                if (date.isBefore(setDateTime)) {
                     setDisable(true);
                 }
             }

@@ -94,23 +94,19 @@ public class DashboardController implements Initializable {
         LocalDateTime now = LocalDateTime.now();
         boolean appointmentInFifteen = false;
         Appointment nearestAppointment = null;
-        long nearestDifference = Long.MAX_VALUE;
         
         for (DataCache item : DataCache.getAllAppointments()) {
             Appointment appointment = (Appointment) item;
             LocalDateTime appointmentDateTime = appointment.getStartDateAndTime();
             
-            // Calculate the difference between the appointment time and the current time in minutes
+            // Calculate the difference between the appointment time and the current time in minutessss
             long difference = ChronoUnit.MINUTES.between(now, appointmentDateTime);
             
             // Check if the difference is less than or equal to 15 and is positive
             if (difference <= 15 && difference >= 0) {
-                // Check if this appointment is the nearest one to the current time
-                if (difference < nearestDifference) {
-                    nearestDifference = difference;
-                    nearestAppointment = appointment;
-                }
+                System.out.println("15 min check");
                 appointmentInFifteen = true;
+                break;
             }
         }
         
@@ -120,6 +116,7 @@ public class DashboardController implements Initializable {
             appAlertLabel.setStyle("-fx-text-fill: RED; -fx-background-color: CCCCCC");
             appAlertInfoLabel.setText("[  Appointment " + nearestAppointment.getId() + " | " + nearestAppointment.getStartDateAndTime().toLocalDate() + " | " + nearestAppointment.getStartDateAndTime().toLocalTime() + "  ]");
             appAlertInfoLabel.setStyle("-fx-text-fill: RED; -fx-background-color: CCCCCC");
+            appAlertInfoLabel.setVisible(true);
         } else {
             // Display that there are no appointments within 15 minutes
             appAlertLabel.setText("There are no appointments within 15 minutes.");
@@ -128,7 +125,6 @@ public class DashboardController implements Initializable {
         }
         
         appAlertLabel.setVisible(true);
-        appAlertInfoLabel.setVisible(true);
         closeAppAlertButton.setVisible(true);
     }
     
