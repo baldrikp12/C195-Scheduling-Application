@@ -8,21 +8,25 @@ import kbaldr2.controller.*;
 
 import java.io.IOException;
 
+/**
+ * A utility class responsible for creating and managing application scenes, including
+ * managing the controllers for each scene.
+ */
 public class SceneManager {
-
+    
     private static Stage loginStage;
     private static Stage dashboardStage;
     private static Stage customerStage;
     private static Stage appointmentStage;
     private static Stage reportStage;
-
-
+    
+    
     private SceneManager() {
-
+    
     }
-
+    
     /**
-     * Opens a new scene in a new window
+     * Opens a new login scene in a new window.
      *
      * @throws IOException If the FXML file cannot be loaded
      */
@@ -37,7 +41,12 @@ public class SceneManager {
         loginStage.setResizable(false);
         loginStage.show();
     }
-
+    
+    /**
+     * Opens a new dashboard scene in a new window.
+     *
+     * @throws IOException If the FXML file cannot be loaded
+     */
     public static void buildDashboardScene() throws IOException {
         //builds dashbord scene
         FXMLLoader dashboardLoader = new FXMLLoader(SceneManager.class.getResource("/kbaldr2/view/dashboard.fxml"));
@@ -48,9 +57,14 @@ public class SceneManager {
         dashboardStage.setUserData(dashboardController);
         dashboardStage.setResizable(false);
         dashboardStage.show();
-
+        
     }
-
+    
+    /**
+     * Opens a new customer scene in a new window.
+     *
+     * @throws IOException If the FXML file cannot be loaded
+     */
     public static void buildCustomerScene() throws IOException {
         //builds customer scene
         FXMLLoader customerLoader = new FXMLLoader(SceneManager.class.getResource("/kbaldr2/view/customer.fxml"));
@@ -61,9 +75,14 @@ public class SceneManager {
         customerStage.setUserData(customerController);
         customerStage.setResizable(false);
         customerStage.show();
-
+        
     }
-
+    
+    /**
+     * Opens a new appointment scene in a new window.
+     *
+     * @throws IOException If the FXML file cannot be loaded
+     */
     public static void buildAppointmentScene() throws IOException {
         //builds appointment scene
         FXMLLoader appointmentLoader = new FXMLLoader(SceneManager.class.getResource("/kbaldr2/view/appointment.fxml"));
@@ -75,7 +94,12 @@ public class SceneManager {
         appointmentStage.setResizable(false);
         appointmentStage.show();
     }
-
+    
+    /**
+     * Opens a new report scene in a new window.
+     *
+     * @throws IOException If the FXML file cannot be loaded
+     */
     public static void buildReportScene() throws IOException {
         //builds report scene
         FXMLLoader reportLoader = new FXMLLoader(SceneManager.class.getResource("/kbaldr2/view/report.fxml"));
@@ -86,11 +110,17 @@ public class SceneManager {
         reportStage.setUserData(reportController);
         reportStage.setResizable(false);
         reportStage.show();
-
+        
     }
-
+    
+    /**
+     * Retrieves the stage object based on the stage name.
+     *
+     * @param theStageName the stage name to retrieve
+     * @return the Stage object corresponding to the stage name
+     */
     public static Stage getStage(String theStageName) {
-
+        
         Stage theStage = null;
         switch (theStageName) {
             case "login":
@@ -110,42 +140,67 @@ public class SceneManager {
                 break;
         }
         return theStage;
-
+        
     }
-
+    
+    /**
+     * Retrieves the LoginController from the login stage.
+     *
+     * @return the LoginController object
+     */
     public static LoginController getLoginController() {
-
+        
         LoginController loginController = (LoginController) loginStage.getUserData();
-
+        
         return loginController;
     }
-
+    
+    /**
+     * Retrieves the DashboardController from the dashboard stage.
+     *
+     * @return the DashboardController object
+     */
     public static DashboardController getDashboardController() {
-
+        
         DashboardController dashboardController = (DashboardController) dashboardStage.getUserData();
-
+        
         return dashboardController;
     }
-
+    
+    /**
+     * Retrieves the CustomerController from the customer stage.
+     *
+     * @return the CustomerController object
+     */
     public static CustomerController getCustomerController() {
-
+        
         CustomerController customerController = (CustomerController) customerStage.getUserData();
-
+        
         return customerController;
     }
-
+    
+    /**
+     * Retrieves the AppointmentController from the appointment stage.
+     *
+     * @return the AppointmentController object
+     */
     public static AppointmentController getAppointmentController() {
-
+        
         AppointmentController appointmentController = (AppointmentController) appointmentStage.getUserData();
-
+        
         return appointmentController;
     }
-
+    
+    /**
+     * Retrieves the ReportController from the report stage.
+     *
+     * @return the ReportController object
+     */
     public static ReportController getReportController() {
-
+        
         ReportController reportController = (ReportController) reportStage.getUserData();
-
+        
         return reportController;
     }
-
+    
 }

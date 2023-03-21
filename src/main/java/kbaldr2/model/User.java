@@ -2,7 +2,7 @@ package kbaldr2.model;
 
 public class User extends DataCache {
     
-    private int userID;
+    private final int userID;
     private String userName;
     
     

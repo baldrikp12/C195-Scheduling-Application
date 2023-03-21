@@ -10,18 +10,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * A Data Access Object (DAO) class for managing Location data (Country and first level divisions).
+ * Extends the generic DAO class with DataCache type.
+ * <p>
+ * NOTE: Only used to retrieve location data.
+ */
 public class LocationDAO extends DAO<DataCache> {
     
     private static final ObservableList<DataCache> divisionData = FXCollections.observableArrayList();
     
+    /**
+     * Constructs an LocationDAO with the specified connection.
+     *
+     * @param connection The database connection to use
+     */
     public LocationDAO(Connection connection) {
         
         super(connection);
     }
     
     /**
-     * @return
-     * @throws SQLException
+     * Retrieves all locations from the database.
+     *
+     * @return An ObservableList containing all locations
+     * @throws SQLException If there is an issue executing the query
      */
     @Override public ObservableList<DataCache> getAll() throws SQLException {
         
@@ -43,22 +56,21 @@ public class LocationDAO extends DAO<DataCache> {
     }
     
     /**
-     * @param item
+     * Not Used
      */
     @Override public void create(DataCache item) {
     
     }
     
     /**
-     * @param item
+     * Not Used
      */
     @Override public void update(DataCache item) {
     
     }
     
     /**
-     * @param id
-     * @throws SQLException
+     * Not Used
      */
     @Override public void delete(int id) throws SQLException {
     

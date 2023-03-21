@@ -60,8 +60,10 @@ public class CustomerController implements Initializable {
     
     
     /**
-     * @param url
-     * @param resourceBundle
+     * Initializes the controller class.
+     *
+     * @param url            The location used to resolve relative paths for the root object.
+     * @param resourceBundle The resources used to localize the root object.
      */
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
         
@@ -69,6 +71,22 @@ public class CustomerController implements Initializable {
         userLabel.setText(DAO.getUsername());
     }
     
+    /**
+     * Checks if the form is completely filled out.
+     *
+     * @return True if the form is completely filled out, false otherwise.
+     */
+    @FXML private void setUSList() {
+        
+        divisionCombo.setItems(Location.getUs());
+        divisionCombo.setPromptText("States");
+    }
+    
+    /**
+     * Sets a customer to be modified.
+     *
+     * @param theItem The customer to modify.
+     */
     public void setCustomerToModify(DataCache theItem) {
         
         addModLabel.setText("Update Appointment");
@@ -78,6 +96,9 @@ public class CustomerController implements Initializable {
         populateForm();
     }
     
+    /**
+     * Populates the form with the customer's data.
+     */
     private void populateForm() {
         
         appIDField.setText(Integer.toString(customerToMod.getId()));
@@ -103,6 +124,31 @@ public class CustomerController implements Initializable {
         
     }
     
+    /**
+     * Sets the list of UK countries.
+     */
+    @FXML private void setUKList() {
+        
+        
+        divisionCombo.setItems(Location.getUk());
+        divisionCombo.setPromptText("Countries");
+    }
+    
+    /**
+     * Sets the list of Canadian provinces.
+     */
+    @FXML private void setCAList() {
+        
+        divisionCombo.setItems(Location.getCa());
+        divisionCombo.setPromptText("Provinces");
+        
+    }
+    
+    /**
+     * Adds or modifies a customer.
+     *
+     * @param event The action event triggered by the button click.
+     */
     @FXML private void addModifyCust(ActionEvent event) {
         
         if (isFilledOut()) {
@@ -145,18 +191,11 @@ public class CustomerController implements Initializable {
         }
     }
     
-    private boolean containsDivision() {
-        
-        for (DataCache item : DataCache.getAllLocations()) {
-            Location loc = (Location) item;
-            if (addressField.getText().contains(loc.getDivisionName().toLowerCase())) {
-                Alerts.showAlert("Address should only contain home and street number", "Invalid Address");
-                return true;
-            }
-        }
-        return false;
-    }
-    
+    /**
+     * Checks if the form is completely filled out.
+     *
+     * @return True if the form is completely filled out, false otherwise.
+     */
     private boolean isFilledOut() {
         
         boolean isAllFilled = true;
@@ -181,27 +220,26 @@ public class CustomerController implements Initializable {
         return isAllFilled;
     }
     
-    @FXML private void setUSList() {
+    /**
+     * Checks if the address contains a division.
+     *
+     * @return True if the address contains a division, false otherwise.
+     */
+    private boolean containsDivision() {
         
-        divisionCombo.setItems(Location.getUs());
-        divisionCombo.setPromptText("States");
+        for (DataCache item : DataCache.getAllLocations()) {
+            Location loc = (Location) item;
+            if (addressField.getText().contains(loc.getDivisionName().toLowerCase())) {
+                Alerts.showAlert("Address should only contain home and street number", "Invalid Address");
+                return true;
+            }
+        }
+        return false;
     }
     
-    @FXML private void setUKList() {
-        
-        
-        divisionCombo.setItems(Location.getUk());
-        divisionCombo.setPromptText("Countries");
-    }
-    
-    @FXML private void setCAList() {
-        
-        divisionCombo.setItems(Location.getCa());
-        divisionCombo.setPromptText("Provinces");
-        
-    }
-    
-    
+    /**
+     * Closes the current window.
+     */
     @FXML private void close() {
         
         Stage custStage = SceneManager.getStage("customer");

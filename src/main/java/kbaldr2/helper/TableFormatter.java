@@ -7,6 +7,10 @@ import kbaldr2.model.DataCache;
 
 import java.time.LocalDateTime;
 
+/**
+ * A utility class for constructing and formatting tables with specific
+ * columns and properties for appointment and customer data.
+ */
 public class TableFormatter {
     
     private static final TableColumn<DataCache, Integer> app_AppointmentIdCol = new TableColumn<>("Appointment ID");
@@ -27,6 +31,9 @@ public class TableFormatter {
     private static final TableColumn<DataCache, Integer> cust_DivisionIdCol = new TableColumn<>("Division ID");
     private static TableView<DataCache> dataCacheTable;
     
+    /**
+     * Builds the appointment table with appropriate columns and properties.
+     */
     public static void buildAppTables() {
         //builds appointments table
         app_AppointmentIdCol.setCellValueFactory(new PropertyValueFactory<>("Id"));
@@ -60,6 +67,9 @@ public class TableFormatter {
         dataCacheTable.getColumns().add(app_ContactCol);
     }
     
+    /**
+     * Builds the customer table with appropriate columns and properties.
+     */
     public static void buildCustTables() {
         
         //builds customers table
@@ -83,6 +93,11 @@ public class TableFormatter {
         
     }
     
+    /**
+     * Sets the TableView instance to be used by the TableFormatter.
+     *
+     * @param theTableView The TableView instance to be used for formatting
+     */
     public static void setTableView(TableView theTableView) {
         
         dataCacheTable = theTableView;

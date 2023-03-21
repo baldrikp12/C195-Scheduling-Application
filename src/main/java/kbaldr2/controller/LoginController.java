@@ -6,8 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import kbaldr2.helper.SceneManager;
-import kbaldr2.model.dao.DAO;
 import kbaldr2.model.DataCache;
+import kbaldr2.model.dao.DAO;
 
 import java.io.*;
 import java.sql.Connection;
@@ -20,6 +20,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * A controller class for handling user login and authentication. It manages the Login screen and its components, including user input validation and login activity logging.
+ */
 public class LoginController {
     
     private final Locale CURRENT_LOCALE = Locale.getDefault();
@@ -39,7 +42,7 @@ public class LoginController {
     private Label locationLabel;
     
     /**
-     * Sets up the login.fxml scene.
+     * Initializes and configures the login.fxml scene.
      */
     @FXML public void initialize() {
         
@@ -83,12 +86,11 @@ public class LoginController {
     }
     
     /**
-     * Checks credentials against database.
-     * If credentials check out passes sets the User_ID for DataCache.
+     * Checks the provided credentials against the database. If the credentials are valid, it sets the User_ID for DataCache.
      *
      * @param username The user's username
      * @param password The user's password
-     * @return The Results
+     * @return true if the credentials are valid, false otherwise
      */
     private boolean checkCredentials(String username, String password) {
         
@@ -125,8 +127,9 @@ public class LoginController {
     }
     
     /**
-     * Saves login attempt to file  login_activity.txt
-     * [date] [timestamp] [user] [status]
+     * Logs the login attempt to a file called login_activity.txt.
+     *
+     * @param theLoginResult A string describing the result of the login attempt, e.g., "Success" or "Failed"
      */
     private void logAttempt(String theLoginResult) {
         
@@ -156,7 +159,9 @@ public class LoginController {
     }
     
     /**
-     * @return rows The row count in login_activity.txt
+     * Returns the row count in the login_activity.txt file.
+     *
+     * @return The number of rows in the login_activity.txt file
      */
     private int getRowCount() {
         
@@ -171,12 +176,18 @@ public class LoginController {
         return rows;
     }
     
+    /**
+     * Clears the contents of the username and password fields.
+     */
     private void clearFields() {
         
         usernameField.clear();
         passwordField.clear();
     }
     
+    /**
+     * Closes the login window.
+     */
     public void close() {
     
     }

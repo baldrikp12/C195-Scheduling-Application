@@ -9,19 +9,31 @@ import kbaldr2.model.DataCache;
 import java.sql.*;
 import java.time.LocalDateTime;
 
+/**
+ * A Data Access Object (DAO) class for managing Appointment data.
+ * Extends the generic DAO class with DataCache type.
+ */
 public class AppointmentDAO extends DAO<DataCache> {
     
     private static final String SELECT_ALL_STMT = "SELECT * FROM appointments";
     private static final String DELETE_RECORD_STMT = "DELETE FROM appointments WHERE Appointment_ID = ";
     private static final ObservableList<DataCache> appointmentData = FXCollections.observableArrayList();
     
+    /**
+     * Constructs an AppointmentDAO with the specified connection.
+     *
+     * @param connection The database connection to use
+     */
     public AppointmentDAO(Connection connection) {
         
         super(connection);
     }
     
     /**
-     * @return
+     * Retrieves all appointments from the database.
+     *
+     * @return An ObservableList containing all appointments
+     * @throws SQLException If there is an issue executing the query
      */
     @Override public ObservableList<DataCache> getAll() throws SQLException {
         
@@ -61,7 +73,9 @@ public class AppointmentDAO extends DAO<DataCache> {
     }
     
     /**
-     * @param item
+     * Creates a new appointment in the database.
+     *
+     * @param item The appointment to create
      */
     @Override public void create(DataCache item) {
         
@@ -89,7 +103,9 @@ public class AppointmentDAO extends DAO<DataCache> {
     }
     
     /**
-     * @param item
+     * Updates an existing appointment in the database.
+     *
+     * @param item The appointment with updated data
      */
     @Override public void update(DataCache item) {
         
@@ -113,7 +129,10 @@ public class AppointmentDAO extends DAO<DataCache> {
     }
     
     /**
-     * @param id
+     * Deletes an appointment from the database using its ID.
+     *
+     * @param id The ID of the appointment to delete
+     * @throws SQLException If there is an issue executing the deletion
      */
     @Override public void delete(int id) throws SQLException {
         
@@ -122,10 +141,5 @@ public class AppointmentDAO extends DAO<DataCache> {
         statement.executeUpdate(deleteRecord);
         
     }
-    
-    /**
-     * @param item
-     */
-    
     
 }

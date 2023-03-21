@@ -10,18 +10,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * A Data Access Object (DAO) class for managing Contact data.
+ * Extends the generic DAO class with DataCache type.
+ * <p>
+ * NOTE: Only used to retrieve contact data.
+ */
 public class ContactDAO extends DAO<DataCache> {
     
     private static final ObservableList<DataCache> contactData = FXCollections.observableArrayList();
     
+    /**
+     * Constructs an ContactDAO with the specified connection.
+     *
+     * @param connection The database connection to use
+     */
     public ContactDAO(Connection connection) {
         
         super(connection);
     }
     
     /**
-     * @return
-     * @throws SQLException
+     * Retrieves all contacts from the database.
+     *
+     * @return An ObservableList containing all contacts
+     * @throws SQLException If there is an issue executing the query
      */
     @Override public ObservableList<DataCache> getAll() throws SQLException {
         
@@ -42,22 +55,21 @@ public class ContactDAO extends DAO<DataCache> {
     }
     
     /**
-     * @param item
+     * Not Used
      */
     @Override public void create(DataCache item) {
     
     }
     
     /**
-     * @param item
+     * Not Used
      */
     @Override public void update(DataCache item) {
     
     }
     
     /**
-     * @param id
-     * @throws SQLException
+     * Not Used
      */
     @Override public void delete(int id) throws SQLException {
     

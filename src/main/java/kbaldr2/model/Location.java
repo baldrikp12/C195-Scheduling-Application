@@ -5,14 +5,13 @@ import javafx.collections.ObservableList;
 
 public class Location extends DataCache {
     
-    private int divisionID;
-    private String divisionName;
-    private int countryID;
-    private String countryName;
-    
-    private static ObservableList<String> us = FXCollections.observableArrayList();
-    private static ObservableList<String> uk = FXCollections.observableArrayList();
-    private static ObservableList<String> ca = FXCollections.observableArrayList();
+    private static final ObservableList<String> us = FXCollections.observableArrayList();
+    private static final ObservableList<String> uk = FXCollections.observableArrayList();
+    private static final ObservableList<String> ca = FXCollections.observableArrayList();
+    private final int divisionID;
+    private final String divisionName;
+    private final int countryID;
+    private final String countryName;
     
     public Location(int theDivisionID, String theDivisionName, int theCountryID, String theCountryName) {
         
@@ -39,6 +38,21 @@ public class Location extends DataCache {
         
     }
     
+    public static ObservableList<String> getCa() {
+        
+        return ca;
+    }
+    
+    public static ObservableList<String> getUs() {
+        
+        return us;
+    }
+    
+    public static ObservableList<String> getUk() {
+        
+        return uk;
+    }
+    
     /**
      * @return
      */
@@ -60,21 +74,6 @@ public class Location extends DataCache {
     public String getCountryName() {
         
         return countryName;
-    }
-    
-    public static ObservableList<String> getCa() {
-        
-        return ca;
-    }
-    
-    public static ObservableList<String> getUs() {
-        
-        return us;
-    }
-    
-    public static ObservableList<String> getUk() {
-        
-        return uk;
     }
     
 }

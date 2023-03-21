@@ -7,19 +7,31 @@ import kbaldr2.model.DataCache;
 
 import java.sql.*;
 
+/**
+ * A Data Access Object (DAO) class for managing Customer data.
+ * Extends the generic DAO class with DataCache type.
+ */
 public class CustomerDAO extends DAO<DataCache> {
     
     private static final String SELECT_ALL_STMT = "SELECT * FROM customers";
     private static final String DELETE_RECORD_STMT = "DELETE FROM customers WHERE Customer_ID = ";
     private static final ObservableList<DataCache> customerData = FXCollections.observableArrayList();
     
+    /**
+     * Constructs a CustomerDAO with the specified connection.
+     *
+     * @param connection The database connection to use
+     */
     public CustomerDAO(Connection connection) {
         
         super(connection);
     }
     
     /**
-     * @return
+     * Retrieves all customers from the database.
+     *
+     * @return An ObservableList containing all customers
+     * @throws SQLException If there is an issue executing the query
      */
     @Override public ObservableList<DataCache> getAll() throws SQLException {
         
@@ -47,9 +59,12 @@ public class CustomerDAO extends DAO<DataCache> {
     }
     
     /**
-     * @param item
+     * Creates a new customer in the database.
+     *
+     * @param item The customer to create
      */
     @Override public void create(DataCache item) {
+        
         Customer customer = (Customer) item;
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO customers (Customer_Name,Address,Postal_Code,Phone,Create_Date,Created_By,Division_ID) " + "VALUES (?, ?, ?, ?, NOW(),?,?)", Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, customer.getName());
@@ -67,13 +82,16 @@ public class CustomerDAO extends DAO<DataCache> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    
+        
     }
     
     /**
-     * @param item
+     * Updates an existing customer in the database.
+     *
+     * @param item The customer with updated data
      */
     @Override public void update(DataCache item) {
+        
         Customer customer = (Customer) item;
         try (PreparedStatement statement = connection.prepareStatement("UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = NOW(), Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?")) {
             statement.setString(1, customer.getName());
@@ -90,7 +108,10 @@ public class CustomerDAO extends DAO<DataCache> {
     }
     
     /**
-     * @param id
+     * Deletes a customer from the database using its ID.
+     *
+     * @param id The ID of the customer to delete
+     * @throws SQLException If there is an issue executing the deletion
      */
     @Override public void delete(int id) throws SQLException {
         

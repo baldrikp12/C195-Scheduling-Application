@@ -4,6 +4,9 @@ package kbaldr2.controller;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**
+ * This class provides methods to manage a database connection using JDBC.
+ */
 public class DBConnection {
     
     private static final String protocol = "jdbc";
@@ -17,6 +20,9 @@ public class DBConnection {
     private static final String password = "Passw0rd!"; // Password
     public static Connection connection = null;  // Connection Interface
     
+    /**
+     * Opens a database connection using the specified parameters.
+     */
     public static void openConnection() {
         
         try {
@@ -28,6 +34,9 @@ public class DBConnection {
         }
     }
     
+    /**
+     * Closes the active database connection.
+     */
     public static void closeConnection() {
         
         try {
@@ -37,6 +46,11 @@ public class DBConnection {
         }
     }
     
+    /**
+     * Returns the current database connection.
+     *
+     * @return the current {@link Connection} object
+     */
     public static Connection getConnection() {
         
         return connection;
