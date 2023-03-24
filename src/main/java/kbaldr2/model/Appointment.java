@@ -50,6 +50,23 @@ public class Appointment extends DataCache {
         this.userID = userID;
         this.contactID = contactID;
     }
+    /**
+     * Constructs a default Appointment object.
+     *
+     */
+    public Appointment() {
+        
+        this.appointmentID = 0000000;
+        this.title = "";
+        this.description = "";
+        this.location = "";
+        this.type = "";
+        this.startDateAndTime = null;
+        this.endDateAndTime = null;
+        this.customerID = 0000000;
+        this.userID = 0000000;
+        this.contactID = 0000000;
+    }
     
     @Override public int getId() {
         

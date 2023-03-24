@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
 /**
  * DashboardController is responsible for controlling the application's dashboard
  * and managing appointments and customer data.
- *
+ * <p>
  * TODO: appointment by customer report
  * TODO: third custom report
  * TODO: fix customer combobox issue.
@@ -112,6 +112,7 @@ public class DashboardController implements Initializable {
             if (difference <= 15 && difference >= 0) {
                 System.out.println("15 min check");
                 appointmentInFifteen = true;
+                nearestAppointment = appointment;
                 break;
             }
         }
@@ -431,18 +432,43 @@ public class DashboardController implements Initializable {
         }
         return hasAppointments;
     }
-
-    @FXML
-    private void viewReports() throws IOException {
+    
+    @FXML private void viewAppointmentReport() throws IOException {
+        
         disableDashboard(true);
-        SceneManager.buildReportScene();
-        SceneManager.getStage("report").setOnCloseRequest(new EventHandler<WindowEvent>() {
+        SceneManager.buildReportScene("appointment");
+        SceneManager.getStage("appointmentreport").setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override public void handle(WindowEvent event) {
-
+                
                 disableDashboard(false);
             }
         });
     }
+    
+    @FXML private void viewScheduleReport() throws IOException {
+        
+        disableDashboard(true);
+        SceneManager.buildReportScene("schedule");
+        SceneManager.getStage("schedulereport").setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override public void handle(WindowEvent event) {
+                
+                disableDashboard(false);
+            }
+        });
+    }
+    
+    @FXML private void viewCountReport() throws IOException {
+        
+        disableDashboard(true);
+        SceneManager.buildReportScene("count");
+        SceneManager.getStage("countreport").setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override public void handle(WindowEvent event) {
+                
+                disableDashboard(false);
+            }
+        });
+    }
+    
     /**
      * Logs out the current user and returns to the login screen.
      *

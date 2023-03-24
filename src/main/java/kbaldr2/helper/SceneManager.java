@@ -18,7 +18,9 @@ public class SceneManager {
     private static Stage dashboardStage;
     private static Stage customerStage;
     private static Stage appointmentStage;
-    private static Stage reportStage;
+    private static Stage appointmentReportStage;
+    private static Stage scheduleReportStage;
+    private static Stage countReportStage;
     
     
     private SceneManager() {
@@ -100,16 +102,41 @@ public class SceneManager {
      *
      * @throws IOException If the FXML file cannot be loaded
      */
-    public static void buildReportScene() throws IOException {
+    public static void buildReportScene(String report) throws IOException {
         //builds report scene
-        FXMLLoader reportLoader = new FXMLLoader(SceneManager.class.getResource("/kbaldr2/view/report.fxml"));
-        Parent reportRoot = reportLoader.load();
-        ReportController reportController = reportLoader.getController();
-        reportStage = new Stage();
-        reportStage.setScene(new Scene(reportRoot));
-        reportStage.setUserData(reportController);
-        reportStage.setResizable(false);
-        reportStage.show();
+        switch (report) {
+            case "appointment":
+                FXMLLoader appointmentReportLoader = new FXMLLoader(SceneManager.class.getResource("/kbaldr2/view/appointmentreport.fxml"));
+                Parent appointmentReportRoot = appointmentReportLoader.load();
+                AppointmentReportController appointmentreportController = appointmentReportLoader.getController();
+                appointmentReportStage = new Stage();
+                appointmentReportStage.setScene(new Scene(appointmentReportRoot));
+                appointmentReportStage.setUserData(appointmentreportController);
+                appointmentReportStage.setResizable(false);
+                appointmentReportStage.show();
+                break;
+            case "schedule":
+                FXMLLoader scheduleReportLoader = new FXMLLoader(SceneManager.class.getResource("/kbaldr2/view/schedulereport.fxml"));
+                Parent scheduleReportRoot = scheduleReportLoader.load();
+                ScheduleReportController scheduleRController = scheduleReportLoader.getController();
+                scheduleReportStage = new Stage();
+                scheduleReportStage.setScene(new Scene(scheduleReportRoot));
+                scheduleReportStage.setUserData(scheduleRController);
+                scheduleReportStage.setResizable(false);
+                scheduleReportStage.show();
+                break;
+            case "count":
+                FXMLLoader countReportLoader = new FXMLLoader(SceneManager.class.getResource("/kbaldr2/view/countreport.fxml"));
+                Parent countReportRoot = countReportLoader.load();
+                CountReportController countRController = countReportLoader.getController();
+                countReportStage = new Stage();
+                countReportStage.setScene(new Scene(countReportRoot));
+                countReportStage.setUserData(countRController);
+                countReportStage.setResizable(false);
+                countReportStage.show();
+                break;
+            
+        }
         
     }
     
@@ -135,8 +162,14 @@ public class SceneManager {
             case "appointment":
                 theStage = appointmentStage;
                 break;
-            case "report":
-                theStage = reportStage;
+            case "appointmentreport":
+                theStage = appointmentReportStage;
+                break;
+            case "schedulereport":
+                theStage = scheduleReportStage;
+                break;
+            case "countreport":
+                theStage = countReportStage;
                 break;
         }
         return theStage;
@@ -192,15 +225,39 @@ public class SceneManager {
     }
     
     /**
-     * Retrieves the ReportController from the report stage.
+     * Retrieves the AppointmentReportController from the report stage.
      *
-     * @return the ReportController object
+     * @return the AppointmentReportController object
      */
-    public static ReportController getReportController() {
+    public static AppointmentReportController getAppReportController() {
         
-        ReportController reportController = (ReportController) reportStage.getUserData();
+        AppointmentReportController appointmentRController = (AppointmentReportController) appointmentReportStage.getUserData();
         
-        return reportController;
+        return appointmentRController;
+    }
+    
+    /**
+     * Retrieves the AppointmentReportController from the report stage.
+     *
+     * @return the AppointmentReportController object
+     */
+    public static ScheduleReportController getScheduleReportController() {
+        
+        ScheduleReportController scheduleRController = (ScheduleReportController) scheduleReportStage.getUserData();
+        
+        return scheduleRController;
+    }
+    
+    /**
+     * Retrieves the AppointmentReportController from the report stage.
+     *
+     * @return the AppointmentReportController object
+     */
+    public static CountReportController getCountReportController() {
+        
+        CountReportController countRController = (CountReportController) countReportStage.getUserData();
+        
+        return countRController;
     }
     
 }

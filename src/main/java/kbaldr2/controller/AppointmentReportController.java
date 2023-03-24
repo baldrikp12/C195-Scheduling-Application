@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class ReportController implements Initializable {
+public class AppointmentReportController implements Initializable {
     
     @FXML
     private TextArea typeMonthReport;
@@ -59,7 +59,6 @@ public class ReportController implements Initializable {
                 reportBuilder.append(String.format("      - %s: %d\n", type, count));
             }
         }
-        
         return reportBuilder.toString();
     }
     

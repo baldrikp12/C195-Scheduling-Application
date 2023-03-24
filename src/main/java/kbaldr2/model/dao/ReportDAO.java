@@ -1,5 +1,9 @@
 package kbaldr2.model.dao;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import kbaldr2.model.Appointment;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +37,8 @@ public class ReportDAO {
         
         Map<Integer, Map<String, Integer>> result = new HashMap<>();
         
-        try (Statement statement = connection.createStatement()) {
+        try {
+            Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             
             while (rs.next()) {
@@ -52,6 +57,36 @@ public class ReportDAO {
         }
         
         return result;
+    }
+    
+    public ObservableList<Appointment> generateScheduleForContacts() {
+        
+        ObservableList<Appointment> schedule = FXCollections.observableArrayList();
+        
+        // Query the appointments and contacts tables
+        String query = "SELECT a.appointment_ID, a.title, a.type, a.description, a.start, a.end, a.customer_ID " + "FROM appointments a " + "JOIN contacts c ON a.contact_ID = c.contact_ID;";
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+            
+            // Iterate over the result set and add each appointment to the schedule
+            while (rs.next()) {
+                Appointment appointment = new Appointment();
+                appointment.setAppointmentID(rs.getInt("appointment_ID"));
+                appointment.setTitle(rs.getString("title"));
+                appointment.setType(rs.getString("type"));
+                appointment.setDescription(rs.getString("description"));
+                appointment.setStartDateAndTime(rs.getTimestamp("start_datetime").toLocalDateTime());
+                appointment.setEndDateAndTime(rs.getTimestamp("end_datetime").toLocalDateTime());
+                appointment.setCustomerID(rs.getInt("customer_ID"));
+                schedule.add(appointment);
+            }
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return schedule;
     }
     
 }
