@@ -67,8 +67,9 @@ public class CustomerController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        setUSList();
+    
+        divisionCombo.setPromptText("States");
+        divisionCombo.setItems(Location.getUs());
         userLabel.setText(DAO.getUsername());
     }
 
@@ -99,55 +100,36 @@ public class CustomerController implements Initializable {
         switch (DataCache.getCountryIDFromDivisionID(customerToMod.getDivisionID())) {
             case 1:
                 usRadio.setSelected(true);
-                setUSList();
                 break;
             case 2:
                 ukRadio.setSelected(true);
-                setUKList();
                 break;
             case 3:
                 caRadio.setSelected(true);
-                setCAList();
                 break;
         }
+        radioSelectAction();
         divisionCombo.setValue(DataCache.getDivisionName(customerToMod.getDivisionID()));
 
     }
-
-    /**
-     * Checks if the form is completely filled out.
-     *
-     * @return True if the form is completely filled out, false otherwise.
-     */
+    
     @FXML
-    private void setUSList() {
-
-        divisionCombo.setPromptText("States");
-        divisionCombo.setItems(Location.getUs());
-
+    private void radioSelectAction(){ //TODO prompt text wont update. find other solution
+        // get the selected radio button
+        RadioButton selectedRadio = (RadioButton) regionGroup.getSelectedToggle();
+        divisionCombo.getSelectionModel().clearSelection();
+        // set the prompt text of the combobox based on the selected radio button
+        if (selectedRadio == usRadio) {
+            divisionCombo.setPromptText("States");
+            divisionCombo.setItems(Location.getUs());
+        } else if (selectedRadio == caRadio) {
+            divisionCombo.setPromptText("Provinces");
+            divisionCombo.setItems(Location.getCa());
+        } else if (selectedRadio == ukRadio) {
+            divisionCombo.setPromptText("Countries");
+            divisionCombo.setItems(Location.getUk());
+        }
     }
-
-    /**
-     * Sets the list of UK countries.
-     */
-    @FXML
-    private void setUKList() {
-
-        divisionCombo.setItems(Location.getUk());
-        divisionCombo.setPromptText("Countries");
-    }
-
-    /**
-     * Sets the list of Canadian provinces.
-     */
-    @FXML
-    private void setCAList() {
-
-        System.out.println(divisionCombo.getPromptText());
-        divisionCombo.setItems(Location.getCa());
-        divisionCombo.setPromptText("Provinces");
-    }
-
     /**
      * Adds or modifies a customer.
      *

@@ -32,6 +32,12 @@ import java.util.ResourceBundle;
 /**
  * DashboardController is responsible for controlling the application's dashboard
  * and managing appointments and customer data.
+ *
+ * TODO: appointment by customer report
+ * TODO: third custom report
+ * TODO: fix customer combobox issue.
+ * TODO: maybe incorporate some filters/streams?
+ * TODO: make reports scene pretty?
  */
 public class DashboardController implements Initializable {
     
@@ -99,7 +105,7 @@ public class DashboardController implements Initializable {
             Appointment appointment = (Appointment) item;
             LocalDateTime appointmentDateTime = appointment.getStartDateAndTime();
             
-            // Calculate the difference between the appointment time and the current time in minutessss
+            // Calculate the difference between the appointment time and the current time in minutes
             long difference = ChronoUnit.MINUTES.between(now, appointmentDateTime);
             
             // Check if the difference is less than or equal to 15 and is positive

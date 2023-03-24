@@ -8,12 +8,12 @@
     <children>
         <HBox layoutX="270.0" layoutY="161.0" prefHeight="17.0" prefWidth="223.0" spacing="10.0">
             <children>
-                <RadioButton fx:id="usRadio" mnemonicParsing="false" onAction="#setUSList" selected="true" text="United States">
+                <RadioButton fx:id="usRadio" mnemonicParsing="false" onAction="#radioSelectAction" selected="true" text="United States">
                <toggleGroup>
                   <ToggleGroup fx:id="regionGroup" />
                </toggleGroup></RadioButton>
-                <RadioButton fx:id="caRadio" mnemonicParsing="false" onAction="#setCAList" text="Canada" toggleGroup="$regionGroup" />
-                <RadioButton fx:id="ukRadio" mnemonicParsing="false" onAction="#setUKList" text="UK" toggleGroup="$regionGroup" />
+                <RadioButton fx:id="caRadio" mnemonicParsing="false" onAction="#radioSelectAction" text="Canada" toggleGroup="$regionGroup" />
+                <RadioButton fx:id="ukRadio" mnemonicParsing="false" onAction="#radioSelectAction" text="UK" toggleGroup="$regionGroup" />
             </children>
         </HBox>
         <TextField fx:id="nameField" layoutX="14.0" layoutY="88.0" prefHeight="25.0" prefWidth="246.0" promptText="Full Name" />
