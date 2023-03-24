@@ -28,6 +28,7 @@ import static java.time.LocalTime.now;
 
 /**
  * AppointmentController is responsible for managing the appointment creation and modification screen.
+ * TODO show created by when updating.
  */
 public class AppointmentController implements Initializable {
     
@@ -81,7 +82,6 @@ public class AppointmentController implements Initializable {
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
         
         initializeBusinessHours();
-        updateStartTime();
         
         // Check if the current time is after business hours
         LocalTime currentTime = LocalTime.now();
@@ -102,7 +102,7 @@ public class AppointmentController implements Initializable {
                 }
             }
         });
-        
+        updateStartTime();
         populateCustomerCombo();
         populateContactCombo();
         
@@ -159,7 +159,7 @@ public class AppointmentController implements Initializable {
             startTimeListView.setItems(items);
         } else {
             ObservableList<String> items = FXCollections.observableArrayList();
-            LocalTime start = LocalTime.of(now().getHour(), 0);
+            LocalTime start = LocalTime.of(now().getHour(), 0); //TODO Get nearest 15 minute
             LocalTime end = LocalTime.of(localCloseHour, localCloseMinute);
             for (LocalTime time = start; time.isBefore(end); time = time.plusMinutes(15)) {
                 items.add(time.toString());
@@ -284,7 +284,7 @@ public class AppointmentController implements Initializable {
                     
                     String createdBy = DAO.getUsername();
                     newApp.setCreatedBy(createdBy);
-                    
+
                     dao.create(newApp);
                     DataCache.addAppointment(newApp);
                 } else {

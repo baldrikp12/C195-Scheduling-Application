@@ -425,7 +425,18 @@ public class DashboardController implements Initializable {
         }
         return hasAppointments;
     }
-    
+
+    @FXML
+    private void viewReports() throws IOException {
+        disableDashboard(true);
+        SceneManager.buildReportScene();
+        SceneManager.getStage("report").setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override public void handle(WindowEvent event) {
+
+                disableDashboard(false);
+            }
+        });
+    }
     /**
      * Logs out the current user and returns to the login screen.
      *
