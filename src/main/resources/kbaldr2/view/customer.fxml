@@ -31,7 +31,7 @@
                 <Font name="System Bold" size="24.0" />
             </font>
         </Label>
-      <ComboBox fx:id="divisionCombo" layoutX="307.0" layoutY="190.0" prefWidth="150.0" />
+      <ComboBox fx:id="divisionCombo" layoutX="329.0" layoutY="190.0" prefWidth="150.0" />
       <HBox layoutX="14.0" layoutY="262.0" spacing="5.0">
          <children>
             <Label text="Current User:" />
@@ -44,5 +44,6 @@
             <Label fx:id="appIDField" alignment="TOP_LEFT" prefHeight="17.0" prefWidth="42.0" text="AUTO" />
          </children>
       </HBox>
+      <Label fx:id="divisionLabel" layoutX="270.0" layoutY="194.0" />
     </children>
 </AnchorPane>

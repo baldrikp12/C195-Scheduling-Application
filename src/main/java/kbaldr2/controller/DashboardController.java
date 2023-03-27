@@ -33,7 +33,6 @@ import java.util.ResourceBundle;
  * DashboardController is responsible for controlling the application's dashboard
  * and managing appointments and customer data.
  * <p>
- * TODO: fix customer combobox issue.
  */
 public class DashboardController implements Initializable {
     

@@ -59,7 +59,11 @@ public class LoginController {
         titleLabel.setText(messages.getString("title.label"));
         locationLabel.setText(messages.getString("location.label") + " " + zone);
         
-        // Handle the login button click (lambda expression #1)
+        /**
+         * Handles the login button click.
+         * Lambda Expression #1
+         * @param event The event that triggered the method
+         */
         loginButton.setOnAction(event -> {
             String username = usernameField.getText();
             String password = passwordField.getText();
@@ -80,7 +84,11 @@ public class LoginController {
             
         });
         
-        // Handle the cancel button click (lambda expression #2)
+        /**
+         * Handles the cancel button click.
+         * Lambda Expression #2
+         * @param event The event that triggered the method
+         */
         exitButton.setOnAction(event -> {
             // Exit the program
             System.exit(0);
@@ -176,15 +184,6 @@ public class LoginController {
             e.printStackTrace();
         }
         return rows;
-    }
-    
-    /**
-     * Clears the contents of the username and password fields.
-     */
-    private void clearFields() {
-        
-        usernameField.clear();
-        passwordField.clear();
     }
     
     /**

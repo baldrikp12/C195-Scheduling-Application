@@ -51,6 +51,8 @@ public class CustomerController implements Initializable {
     private RadioButton caRadio;
     @FXML
     private Label userLabel;
+    @FXML
+    private Label divisionLabel;
     
     
     /**
@@ -103,27 +105,28 @@ public class CustomerController implements Initializable {
         }
         radioSelectAction();
         divisionCombo.setValue(DataCache.getDivisionName(customerToMod.getDivisionID()));
-
+        
     }
+    
     /**
      * Sets the prompt text of the division combobox based on the selected radio button.
      */
-    @FXML private void radioSelectAction() { //TODO prompt text wont update. find other solution
+    @FXML private void radioSelectAction() {
         // get the selected radio button
         RadioButton selectedRadio = (RadioButton) regionGroup.getSelectedToggle();
         // set the prompt text of the combobox based on the selected radio button
         if (selectedRadio == usRadio) {
             divisionCombo.setItems(Location.getUs());
-            divisionCombo.setPromptText("States");
+            divisionLabel.setText("States");
         } else if (selectedRadio == caRadio) {
-            caRadio.setSelected(true);
+            
             divisionCombo.setItems(Location.getCa());
-            divisionCombo.setPromptText("Provinces");
+            divisionLabel.setText("Provinces");
         } else if (selectedRadio == ukRadio) {
             divisionCombo.setItems(Location.getUk());
-            divisionCombo.setPromptText("Countries");
+            divisionLabel.setText("Countries");
         }
-
+        
     }
     
     /**

@@ -12,8 +12,8 @@ public class DBConnection {
     private static final String protocol = "jdbc";
     private static final String vendor = ":mysql:";
     private static final String location = "//wgu.ucertify.com:3306/";
-    private static final String databaseName = "";
-    private static final String jdbcUrl = protocol + vendor + location + databaseName + "?connectionTimeZone = SERVER";
+    private static final String databaseName = "client_schedule";
+    private static final String jdbcUrl = protocol + vendor + location + databaseName;
     private static final String driver = "com.mysql.cj.jdbc.Driver"; // Driver reference
     private static final String userName = "sqlUser"; // Username
     private static final String password = "Passw0rd!"; // Password
