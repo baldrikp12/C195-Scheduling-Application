@@ -10,7 +10,7 @@
         <TextArea fx:id="descArea" layoutX="14.0" layoutY="203.0" prefHeight="123.0" prefWidth="200.0" promptText="Description" wrapText="true" />
         <TextField fx:id="locationField" layoutX="14.0" layoutY="158.0" prefHeight="25.0" prefWidth="303.0" promptText="Location" />
         <TextField fx:id="typeField" layoutX="167.0" layoutY="131.0" promptText="Type" />
-        <DatePicker fx:id="datePicker" layoutX="218.0" layoutY="203.0" onAction="#updateStartTime" prefHeight="25.0" prefWidth="141.0" promptText="Date" />
+        <DatePicker fx:id="datePicker" layoutX="218.0" layoutY="203.0" onMouseReleased="#updateStartTime" prefHeight="25.0" prefWidth="141.0" promptText="Date" />
         <HBox layoutX="150.0" layoutY="364.0" spacing="25.0">
             <children>
                 <Button fx:id="addModifyButton" mnemonicParsing="false" onAction="#addModifyApp" text="Create" />
@@ -40,6 +40,12 @@
          <children>
             <Label alignment="CENTER" text="APP ID: " />
             <Label fx:id="appIDField" alignment="TOP_LEFT" prefHeight="17.0" prefWidth="42.0" text="AUTO" />
+         </children>
+      </HBox>
+      <HBox layoutX="17.0" layoutY="326.0" spacing="5.0">
+         <children>
+            <Label text="Created By: " />
+            <Label fx:id="createdByLabel" text="User" />
          </children>
       </HBox>
     </children>

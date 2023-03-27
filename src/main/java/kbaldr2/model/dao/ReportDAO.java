@@ -1,16 +1,14 @@
 package kbaldr2.model.dao;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import kbaldr2.model.Appointment;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+/**
+ * Data Access Object for generating various reports based on the data in the database.
+ */
 public class ReportDAO {
     
     protected static Connection connection;
@@ -26,31 +24,35 @@ public class ReportDAO {
     }
     
     /**
-     * Retrieves all records of type T from the database.s
+     * Returns a map of appointment counts by type and month.
      *
-     * @return An ObservableList containing all records of type T
-     * @throws SQLException If there is an issue executing the query
+     * @return A map of appointment counts by type and month
      */
-    public Map<Integer, Map<String, Integer>> getAppointmentsByTypeAndMonth() {
+    public Map<Integer, Map<Integer, Map<String, Integer>>> getAppointmentsByTypeAndMonth() {
         
-        String query = "SELECT type, EXTRACT(YEAR_MONTH FROM start) AS yearmonth, COUNT(*) as total FROM appointments GROUP BY yearmonth, type ORDER BY yearmonth, type;";
+        String query = "SELECT type, YEAR(start) AS year, MONTH(start) AS month, COUNT(*) as total FROM appointments GROUP BY year, month, type ORDER BY year, month, type;";
         
-        Map<Integer, Map<String, Integer>> result = new HashMap<>();
+        Map<Integer, Map<Integer, Map<String, Integer>>> result = new HashMap<>();
         
         try {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             
             while (rs.next()) {
-                int yearMonth = rs.getInt("yearmonth");
+                int year = rs.getInt("year");
+                int month = rs.getInt("month");
                 String type = rs.getString("type");
                 int count = rs.getInt("total");
                 
-                if (!result.containsKey(yearMonth)) {
-                    result.put(yearMonth, new HashMap<>());
+                if (!result.containsKey(year)) {
+                    result.put(year, new HashMap<>());
                 }
                 
-                result.get(yearMonth).put(type, count);
+                if (!result.get(year).containsKey(month)) {
+                    result.get(year).put(month, new HashMap<>());
+                }
+                
+                result.get(year).get(month).put(type, count);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,34 +61,35 @@ public class ReportDAO {
         return result;
     }
     
-    public ObservableList<Appointment> generateScheduleForContacts() {
+    /**
+     * Returns a map of appointments by customer and contact.
+     *
+     * @return A map of appointments by customer and contact
+     */
+    public Map<String, Set<String>> getAppointmentsByCustomerAndContact() {
         
-        ObservableList<Appointment> schedule = FXCollections.observableArrayList();
+        String query = "SELECT c.Customer_Name AS Customer, co.Contact_Name AS Contact " + "FROM appointments a " + "INNER JOIN customers c ON a.Customer_ID = c.Customer_ID " + "INNER JOIN contacts co ON a.Contact_ID = co.Contact_ID " + "GROUP BY a.Customer_ID, a.Contact_ID " + "ORDER BY c.Customer_Name, co.Contact_Name;";
         
-        // Query the appointments and contacts tables
-        String query = "SELECT a.appointment_ID, a.title, a.type, a.description, a.start, a.end, a.customer_ID " + "FROM appointments a " + "JOIN contacts c ON a.contact_ID = c.contact_ID;";
-        try {
-            Statement statement = connection.createStatement();
+        Map<String, Set<String>> appointmentsByCustomer = new LinkedHashMap<>();
+        
+        try (Statement statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(query);
             
-            // Iterate over the result set and add each appointment to the schedule
             while (rs.next()) {
-                Appointment appointment = new Appointment();
-                appointment.setAppointmentID(rs.getInt("appointment_ID"));
-                appointment.setTitle(rs.getString("title"));
-                appointment.setType(rs.getString("type"));
-                appointment.setDescription(rs.getString("description"));
-                appointment.setStartDateAndTime(rs.getTimestamp("start_datetime").toLocalDateTime());
-                appointment.setEndDateAndTime(rs.getTimestamp("end_datetime").toLocalDateTime());
-                appointment.setCustomerID(rs.getInt("customer_ID"));
-                schedule.add(appointment);
+                String customer = rs.getString("Customer");
+                String contact = rs.getString("Contact");
+                
+                if (!appointmentsByCustomer.containsKey(customer)) {
+                    appointmentsByCustomer.put(customer, new LinkedHashSet<>());
+                }
+                
+                appointmentsByCustomer.get(customer).add(contact);
             }
-            
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         
-        return schedule;
+        return appointmentsByCustomer;
     }
     
 }

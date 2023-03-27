@@ -88,9 +88,9 @@ public abstract class DataCache {
         
         int id = -1;
         for (DataCache item : getAllUsers()) {
-            User theUser = (User) item;
-            if (theUser.getUserName().equals(userName)) {
-                return theUser.getId();
+            
+            if (((User) item).getUserName().equals(userName)) {
+                return ((User) item).getId();
             }
         }
         return id;
@@ -126,9 +126,8 @@ public abstract class DataCache {
         
         int id = -1;
         for (DataCache item : getAllCustomers()) {
-            Customer theCustomer = (Customer) item;
-            if (theCustomer.getName().equals(customerName)) {
-                return theCustomer.getId();
+            if (((Customer) item).getName().equals(customerName)) {
+                return ((Customer) item).getId();
             }
         }
         return id;
@@ -164,9 +163,8 @@ public abstract class DataCache {
         
         int id = -1;
         for (DataCache item : getAllContacts()) {
-            Contact theContact = (Contact) item;
-            if (theContact.getContactName().equals(contactName)) {
-                return theContact.getId();
+            if (((Contact) item).getContactName().equals(contactName)) {
+                return ((Contact) item).getId();
             }
         }
         return id;
@@ -202,9 +200,8 @@ public abstract class DataCache {
         
         String name = "";
         for (DataCache item : getAllLocations()) {
-            Location loc = (Location) item;
-            if (loc.getId() == divisionID) {
-                return loc.getDivisionName();
+            if (((Location) item).getId() == divisionID) {
+                return ((Location) item).getDivisionName();
             }
         }
         return name;

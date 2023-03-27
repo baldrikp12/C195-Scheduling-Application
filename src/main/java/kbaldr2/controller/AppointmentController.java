@@ -24,12 +24,6 @@ import java.net.URL;
 import java.time.*;
 import java.util.ResourceBundle;
 
-import static java.time.LocalTime.now;
-
-/**
- * AppointmentController is responsible for managing the appointment creation and modification screen.
- * TODO show created by when updating.
- */
 public class AppointmentController implements Initializable {
     
     private Appointment appointToMod;
@@ -54,24 +48,20 @@ public class AppointmentController implements Initializable {
     private Button addModifyButton;
     @FXML
     private DatePicker datePicker;
-    
     @FXML
     private TextArea descArea;
-    
     @FXML
     private ListView<String> endTimeListView;
-    
     @FXML
     private TextField locationField;
-    
     @FXML
     private ListView<String> startTimeListView;
-    
     @FXML
     private TextField titleField;
-    
     @FXML
     private TextField typeField;
+    @FXML
+    private Label createdByLabel;
     
     /**
      * Initializes the AppointmentController.
@@ -106,7 +96,9 @@ public class AppointmentController implements Initializable {
         populateCustomerCombo();
         populateContactCombo();
         
+        createdByLabel.setText(DAO.getUsername());
         userLabel.setText(DAO.getUsername());
+        
     }
     
     /**
@@ -143,14 +135,10 @@ public class AppointmentController implements Initializable {
         endTimeListView.getItems().clear();
         // Get the selected date from the DatePicker
         LocalDate selectedDate = datePicker.getValue();
-        // Get the current date
-        LocalDate currentDate = LocalDate.now();
         
         // Check if the selected date is not today
         if (LocalTime.now().isBefore(bod) || LocalTime.now().isAfter(eod) || LocalDate.now().isBefore(selectedDate)) {
-            System.out.println("The selected date is NOT today.");
             ObservableList<String> items = FXCollections.observableArrayList();
-            
             LocalTime start = Formatter.ESTtoLocal(LocalTime.of(8, 0));
             LocalTime end = LocalTime.of(localCloseHour, localCloseMinute);
             for (LocalTime time = start; time.isBefore(end); time = time.plusMinutes(15)) {
@@ -158,15 +146,23 @@ public class AppointmentController implements Initializable {
             }
             startTimeListView.setItems(items);
         } else {
+            int minute = LocalTime.now().getMinute();
+            int roundedMinute;
+            if (minute > 45) {
+                roundedMinute = 00;
+            } else {
+                roundedMinute = (minute / 15) * 15 + 15;
+            }
+            LocalTime roundedTime = LocalTime.now().withMinute(roundedMinute).withSecond(0).withNano(0);
             ObservableList<String> items = FXCollections.observableArrayList();
-            LocalTime start = LocalTime.of(now().getHour(), 0); //TODO Get nearest 15 minute
+            LocalTime start = LocalTime.of(roundedTime.getHour(), roundedTime.getMinute());
             LocalTime end = LocalTime.of(localCloseHour, localCloseMinute);
             for (LocalTime time = start; time.isBefore(end); time = time.plusMinutes(15)) {
                 items.add(time.toString());
             }
             startTimeListView.setItems(items);
+            startTimeListView.scrollTo(0);
         }
-        
     }
     
     /**
@@ -175,8 +171,7 @@ public class AppointmentController implements Initializable {
     private void populateCustomerCombo() {
         
         for (DataCache item : DataCache.getAllCustomers()) {
-            Customer customer = (Customer) item;
-            String customerOption = customer.getName();
+            String customerOption = ((Customer) item).getName();
             customerCombo.getItems().add(customerOption);
         }
     }
@@ -187,8 +182,7 @@ public class AppointmentController implements Initializable {
     private void populateContactCombo() {
         
         for (DataCache item : DataCache.getAllContacts()) {
-            Contact contact = (Contact) item;
-            String contactOption = contact.getContactName();
+            String contactOption = ((Contact) item).getContactName();
             contactCombo.getItems().add(contactOption);
         }
     }
@@ -205,7 +199,6 @@ public class AppointmentController implements Initializable {
         appointToMod = (Appointment) theItem;
         isAdding = false;
         populateForm();
-        
     }
     
     /**
@@ -226,6 +219,7 @@ public class AppointmentController implements Initializable {
         updateEndTime();
         endTimeListView.getSelectionModel().select(appointToMod.getEndDateAndTime().toLocalTime().toString());
         endTimeListView.scrollTo(endTimeListView.getSelectionModel().getSelectedIndex());
+        createdByLabel.setText(appointToMod.getCreatedBy());
     }
     
     /**
@@ -236,14 +230,11 @@ public class AppointmentController implements Initializable {
         endTimeListView.getSelectionModel().clearSelection();
         //gets starting time from starting time list
         String theTime = startTimeListView.getSelectionModel().getSelectedItem();
-        
         //converts string to localtime object
         LocalTime theStartingTime = Formatter.parseTime(theTime);
-        
         //gets the hour and minute from localtime object
         int theHour = theStartingTime.getHour();
         int theMinute = theStartingTime.getMinute();
-        
         
         ObservableList<String> items = FXCollections.observableArrayList();
         
@@ -252,9 +243,9 @@ public class AppointmentController implements Initializable {
         while (endTime.isBefore(LocalTime.of(localCloseHour, localCloseMinute))) {
             endTime = endTime.plusMinutes(15);
             items.add(Formatter.formatTime(endTime));
-            
         }
         endTimeListView.setItems(items);
+        endTimeListView.scrollTo(0);
     }
     
     /**
@@ -271,6 +262,7 @@ public class AppointmentController implements Initializable {
             String type = typeField.getText();
             LocalDateTime startDateTime = getStartDateTime();
             LocalDateTime endDateTime = getEndDateTime();
+            String createdBy = createdByLabel.getText();
             int customerID = DataCache.getCustomerID(customerCombo.getValue());
             int contactID = DataCache.getContactID(contactCombo.getValue());
             int userID = DataCache.getUserID(userLabel.getText());
@@ -280,11 +272,8 @@ public class AppointmentController implements Initializable {
                 DAO<DataCache> dao = new AppointmentDAO(DBConnection.getConnection());
                 
                 if (isAdding) {
-                    Appointment newApp = new Appointment(0, title, description, location, type, startDateTime, endDateTime, customerID, userID, contactID);
+                    Appointment newApp = new Appointment(0, title, description, location, type, startDateTime, endDateTime, createdBy, customerID, userID, contactID);
                     
-                    String createdBy = DAO.getUsername();
-                    newApp.setCreatedBy(createdBy);
-
                     dao.create(newApp);
                     DataCache.addAppointment(newApp);
                 } else {
@@ -316,6 +305,8 @@ public class AppointmentController implements Initializable {
     /**
      * Checks if every node in the scene is filled out. Returns true if filled
      * and false if any field or combobox is null or blank.
+     *
+     * @return true if all fields are filled out, false otherwise
      */
     private boolean isFilledOut() {
         
@@ -336,7 +327,7 @@ public class AppointmentController implements Initializable {
                     ta.setStyle("");
                 }
             } else if (node instanceof ListView lv) {
-                if (lv.getItems().isEmpty()) {
+                if (lv.getSelectionModel().isEmpty()) {
                     lv.setStyle("-fx-border-color: RED;");
                     isAllFilled = false;
                 } else {
@@ -347,18 +338,18 @@ public class AppointmentController implements Initializable {
                     cb.setStyle("-fx-border-color: RED;");
                     isAllFilled = false;
                 } else {
-                    System.out.println(cb.getValue());
                     cb.setStyle("");
                 }
             }
         }
+        System.out.println(endTimeListView.getSelectionModel().getSelectedItem());
         return isAllFilled;
     }
     
     /**
      * Returns a localdatetime object for the appointment start time.
      *
-     * @return localStart
+     * @return localStart The local start time
      */
     private LocalDateTime getStartDateTime() {
         
@@ -371,6 +362,8 @@ public class AppointmentController implements Initializable {
     
     /**
      * Returns a localdatetime object for the appointment end time.
+     *
+     * @return localEnd The local end time
      */
     private LocalDateTime getEndDateTime() {
         
@@ -384,15 +377,14 @@ public class AppointmentController implements Initializable {
     /**
      * Checks if the appointment time frame overlaps with any other appointment for the customer.
      *
-     * @return boolean
+     * @return boolean indicating if there is an overlap or not
      */
     private boolean hasAppOverlap() {
         
-        String alerts = "";
         String customerName = customerCombo.getValue();
         for (DataCache item : DataCache.getAllAppointments()) {
             Appointment app = (Appointment) item;
-            if (app.getCustomerID() == DataCache.getCustomerID(customerName)) {
+            if (app.getCustomerID() == DataCache.getCustomerID(customerName) && (appointToMod != null) & app.getId() != appointToMod.getId()) {
                 if ((getStartDateTime().isAfter(app.getStartDateAndTime()) && getStartDateTime().isBefore(app.getEndDateAndTime())) || (getEndDateTime().isAfter(app.getStartDateAndTime()) && getEndDateTime().isBefore(app.getEndDateAndTime()))) {
                     Alerts.showWarning("An appointment already exists in this time period", "Appointment Overlap");
                     return true;

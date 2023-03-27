@@ -113,6 +113,7 @@ public class SceneManager {
                 appointmentReportStage.setScene(new Scene(appointmentReportRoot));
                 appointmentReportStage.setUserData(appointmentreportController);
                 appointmentReportStage.setResizable(false);
+                appointmentReportStage.setTitle("Appointments Report");
                 appointmentReportStage.show();
                 break;
             case "schedule":
@@ -123,6 +124,7 @@ public class SceneManager {
                 scheduleReportStage.setScene(new Scene(scheduleReportRoot));
                 scheduleReportStage.setUserData(scheduleRController);
                 scheduleReportStage.setResizable(false);
+                scheduleReportStage.setTitle("Schedule Report");
                 scheduleReportStage.show();
                 break;
             case "count":
@@ -133,6 +135,7 @@ public class SceneManager {
                 countReportStage.setScene(new Scene(countReportRoot));
                 countReportStage.setUserData(countRController);
                 countReportStage.setResizable(false);
+                countReportStage.setTitle("Count Report");
                 countReportStage.show();
                 break;
             
@@ -176,29 +179,6 @@ public class SceneManager {
         
     }
     
-    /**
-     * Retrieves the LoginController from the login stage.
-     *
-     * @return the LoginController object
-     */
-    public static LoginController getLoginController() {
-        
-        LoginController loginController = (LoginController) loginStage.getUserData();
-        
-        return loginController;
-    }
-    
-    /**
-     * Retrieves the DashboardController from the dashboard stage.
-     *
-     * @return the DashboardController object
-     */
-    public static DashboardController getDashboardController() {
-        
-        DashboardController dashboardController = (DashboardController) dashboardStage.getUserData();
-        
-        return dashboardController;
-    }
     
     /**
      * Retrieves the CustomerController from the customer stage.
@@ -222,42 +202,6 @@ public class SceneManager {
         AppointmentController appointmentController = (AppointmentController) appointmentStage.getUserData();
         
         return appointmentController;
-    }
-    
-    /**
-     * Retrieves the AppointmentReportController from the report stage.
-     *
-     * @return the AppointmentReportController object
-     */
-    public static AppointmentReportController getAppReportController() {
-        
-        AppointmentReportController appointmentRController = (AppointmentReportController) appointmentReportStage.getUserData();
-        
-        return appointmentRController;
-    }
-    
-    /**
-     * Retrieves the AppointmentReportController from the report stage.
-     *
-     * @return the AppointmentReportController object
-     */
-    public static ScheduleReportController getScheduleReportController() {
-        
-        ScheduleReportController scheduleRController = (ScheduleReportController) scheduleReportStage.getUserData();
-        
-        return scheduleRController;
-    }
-    
-    /**
-     * Retrieves the AppointmentReportController from the report stage.
-     *
-     * @return the AppointmentReportController object
-     */
-    public static CountReportController getCountReportController() {
-        
-        CountReportController countRController = (CountReportController) countReportStage.getUserData();
-        
-        return countRController;
     }
     
 }

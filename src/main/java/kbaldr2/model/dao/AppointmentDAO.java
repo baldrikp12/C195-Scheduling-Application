@@ -65,8 +65,7 @@ public class AppointmentDAO extends DAO<DataCache> {
             userID = rs.getInt("User_ID");
             contactID = rs.getInt("Contact_ID");
             //converts times to system time for display purposes.
-            Appointment newApp = new Appointment(appointmentID, title, description, location, type, Formatter.UTCtoLocal(startDateAndTime), Formatter.UTCtoLocal(endDateAndTime), customerID, userID, contactID);
-            newApp.setCreatedBy(createdBy);
+            Appointment newApp = new Appointment(appointmentID, title, description, location, type, Formatter.UTCtoLocal(startDateAndTime), Formatter.UTCtoLocal(endDateAndTime),createdBy, customerID, userID, contactID);
             appointmentData.add(newApp);
         }
         return appointmentData;

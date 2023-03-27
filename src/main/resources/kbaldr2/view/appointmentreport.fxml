@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="174.0" prefWidth="297.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kbaldr2.controller.AppointmentReportController">
+<AnchorPane prefHeight="350.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kbaldr2.controller.AppointmentReportController">
    <children>
-      <TextArea fx:id="typeMonthReport" layoutX="-1.0" prefHeight="173.0" prefWidth="298.0" />
+      <TextArea fx:id="typeMonthReport" editable="false" layoutX="-1.0" prefHeight="350.0" prefWidth="297.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

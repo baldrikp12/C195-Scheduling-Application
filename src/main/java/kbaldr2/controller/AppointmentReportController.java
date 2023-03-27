@@ -8,18 +8,22 @@ import kbaldr2.model.dao.ReportDAO;
 import java.net.URL;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
+/**
+ * Controller for the Appointment Report scene.
+ * Initializes the scene and generates reports.
+ */
 public class AppointmentReportController implements Initializable {
     
     @FXML
     private TextArea typeMonthReport;
     
     /**
-     * @param url
-     * @param resourceBundle
+     * Initializes the Appointment Report scene.
+     *
+     * @param url            The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle The resources used to localize the root object, or null if the root object was not localized.
      */
     @Override public void initialize(URL url, ResourceBundle resourceBundle) {
         
@@ -30,35 +34,43 @@ public class AppointmentReportController implements Initializable {
         typeMonthReport.setText(report);
     }
     
-    private String generateReport(Map<Integer, Map<String, Integer>> appointmentsByTypeAndMonth) {
+    /**
+     * Generates a report based on appointments by type and month.
+     *
+     * @param appointmentsByTypeAndMonth A map of appointments grouped by type and month.
+     * @return The generated report as a string.
+     */
+    private String generateReport(Map<Integer, Map<Integer, Map<String, Integer>>> appointmentsByTypeAndMonth) {
         
         StringBuilder reportBuilder = new StringBuilder();
-        String currentYear = "";
         
         reportBuilder.append("Appointments Report\n");
         reportBuilder.append("===================\n\n");
         
-        for (Map.Entry<Integer, Map<String, Integer>> yearMonthEntry : appointmentsByTypeAndMonth.entrySet()) {
-            Integer yearMonth = yearMonthEntry.getKey();
-            String year = Integer.toString(yearMonth).substring(0, 4);
-            String monthNumber = Integer.toString(yearMonth).substring(4);
-            Month month = Month.of(Integer.parseInt(monthNumber));
-            String monthName = month.getDisplayName(TextStyle.FULL, Locale.getDefault());
-            Map<String, Integer> types = yearMonthEntry.getValue();
+        List<Integer> years = new ArrayList<>(appointmentsByTypeAndMonth.keySet());
+        Collections.sort(years, Collections.reverseOrder());
+        
+        for (Integer year : years) {
+            Map<Integer, Map<String, Integer>> months = appointmentsByTypeAndMonth.get(year);
+            reportBuilder.append(String.format("Year: %d\n", year));
             
-            if (!year.equals(currentYear)) {
-                currentYear = year;
-                reportBuilder.append(String.format("Year: %s\n", year));
+            List<Integer> monthNumbers = new ArrayList<>(months.keySet());
+            Collections.sort(monthNumbers);
+            
+            for (Integer month : monthNumbers) {
+                String monthName = Month.of(month).getDisplayName(TextStyle.FULL, Locale.getDefault());
+                Map<String, Integer> types = months.get(month);
+                reportBuilder.append(String.format("   Month: %s\n", monthName));
+                
+                for (Map.Entry<String, Integer> typeEntry : types.entrySet()) {
+                    String type = typeEntry.getKey();
+                    int count = typeEntry.getValue();
+                    reportBuilder.append(String.format("      - %-10s %d\n", type, count));
+                }
             }
-            
-            reportBuilder.append(String.format("   Month: %s\n", monthName));
-            
-            for (Map.Entry<String, Integer> typeEntry : types.entrySet()) {
-                String type = typeEntry.getKey();
-                int count = typeEntry.getValue();
-                reportBuilder.append(String.format("      - %s: %d\n", type, count));
-            }
+            reportBuilder.append("\n");
         }
+        
         return reportBuilder.toString();
     }
     

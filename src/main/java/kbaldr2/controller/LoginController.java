@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import kbaldr2.helper.SceneManager;
 import kbaldr2.model.DataCache;
 import kbaldr2.model.dao.DAO;
@@ -57,7 +59,7 @@ public class LoginController {
         titleLabel.setText(messages.getString("title.label"));
         locationLabel.setText(messages.getString("location.label") + " " + zone);
         
-        // Handle the login button click
+        // Handle the login button click (lambda expression #1)
         loginButton.setOnAction(event -> {
             String username = usernameField.getText();
             String password = passwordField.getText();
@@ -78,7 +80,7 @@ public class LoginController {
             
         });
         
-        // Handle the cancel button click
+        // Handle the cancel button click (lambda expression #2)
         exitButton.setOnAction(event -> {
             // Exit the program
             System.exit(0);
@@ -134,13 +136,13 @@ public class LoginController {
     private void logAttempt(String theLoginResult) {
         
         String username = "null";
-        int rows = getRowCount();
         
         try {
             File logFile = new File("login_activity.txt");
             if (!logFile.exists()) {
                 logFile.createNewFile();
             }
+            int rows = getRowCount();
             
             FileWriter writer = new FileWriter(logFile, true);
             String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -189,7 +191,9 @@ public class LoginController {
      * Closes the login window.
      */
     public void close() {
-    
+        
+        Stage appStage = SceneManager.getStage("login");
+        SceneManager.getStage("login").fireEvent(new WindowEvent(appStage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
     
 }

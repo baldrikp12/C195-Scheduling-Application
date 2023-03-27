@@ -33,16 +33,11 @@ import java.util.ResourceBundle;
  * DashboardController is responsible for controlling the application's dashboard
  * and managing appointments and customer data.
  * <p>
- * TODO: appointment by customer report
- * TODO: third custom report
  * TODO: fix customer combobox issue.
- * TODO: maybe incorporate some filters/streams?
- * TODO: make reports scene pretty?
  */
 public class DashboardController implements Initializable {
     
     private boolean viewingAppointments = true;
-    
     @FXML
     private RadioButton allCustsRadio;
     @FXML
@@ -310,7 +305,6 @@ public class DashboardController implements Initializable {
      */
     @FXML private void addRecord() throws IOException {
         
-        DataCache item = dataCacheTable.getSelectionModel().getSelectedItem();
         disableDashboard(true);
         
         if (allCustsRadio.isSelected()) {
@@ -374,6 +368,8 @@ public class DashboardController implements Initializable {
                 });
                 SceneManager.getCustomerController().setCustomerToModify(item);
             }
+        } else {
+            Alerts.showAlert("No record selected.", "Nothing selected");
         }
     }
     
@@ -395,18 +391,23 @@ public class DashboardController implements Initializable {
                 DAO<DataCache> dao;
                 if (dataCacheTable.getSelectionModel().getSelectedItem() instanceof Appointment) {
                     dao = new AppointmentDAO(DBConnection.getConnection());
-                    dao.delete(recordToDelete.getId());
+                    int appID = recordToDelete.getId();
+                    String appType = ((Appointment) recordToDelete).getType();
+                    dao.delete(appID);
                     DataCache.getAllAppointments().remove(dataCacheTable.getSelectionModel().getSelectedItem());
                     DataCache tempList = dataCacheTable.getSelectionModel().getSelectedItem();
                     dataCacheTable.getItems().remove(tempList);
+                    Alerts.showAlert("Appointment " + appID + " for " + appType + " has been cancelled.", "Appointment Cancellation");
                 } else if (hasAppointments()) {
                     Alerts.showWarning("Customer still has appointments", "Open Appointments");
                 } else {
                     dao = new CustomerDAO(DBConnection.getConnection());
+                    String custName = ((Customer) recordToDelete).getName();
                     dao.delete(recordToDelete.getId());
                     DataCache.getAllCustomers().remove(dataCacheTable.getSelectionModel().getSelectedItem());
                     DataCache tempList = dataCacheTable.getSelectionModel().getSelectedItem();
                     dataCacheTable.getItems().remove(tempList);
+                    Alerts.showAlert("Customer " + custName + " has been removed.", "Customer Removal");
                 }
             }
         }
@@ -433,6 +434,11 @@ public class DashboardController implements Initializable {
         return hasAppointments;
     }
     
+    /**
+     * Displays a report showing the number of appointments by type and month.
+     *
+     * @throws IOException if an input/output error occurs while building the report scene.
+     */
     @FXML private void viewAppointmentReport() throws IOException {
         
         disableDashboard(true);
@@ -445,6 +451,11 @@ public class DashboardController implements Initializable {
         });
     }
     
+    /**
+     * Displays a report showing a list of appointments by contact.
+     *
+     * @throws IOException if an input/output error occurs while building the report scene.
+     */
     @FXML private void viewScheduleReport() throws IOException {
         
         disableDashboard(true);
@@ -457,6 +468,11 @@ public class DashboardController implements Initializable {
         });
     }
     
+    /**
+     * Displays a report showing a list of customers and the different contacts they've seen.
+     *
+     * @throws IOException if an input/output error occurs while building the report scene.
+     */
     @FXML private void viewCountReport() throws IOException {
         
         disableDashboard(true);
